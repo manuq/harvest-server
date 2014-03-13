@@ -71,6 +71,15 @@ class DataStore(object):
                    'birthdate = VALUES(birthdate), '\
                    'gender = VALUES(gender)'
 
+    QUERY_SESSION = 'INSERT INTO sessions '\
+                    '(start_time, spent_time, is_sugar, serial_number) '\
+                    'values (%s, %s, %s, %s) '\
+                    'ON DUPLICATE KEY UPDATE '\
+                    'start_time = VALUES(start_time), '\
+                    'spent_time = VALUES(spent_time), '\
+                    'is_sugar = VALUES(is_sugar), '\
+                    'serial_number = VALUES(serial_number)'
+
     def __init__(self, host, port, username, password, database):
         self._connection = MySQLdb.connect(host=host,
                                            port=port,
@@ -80,7 +89,7 @@ class DataStore(object):
 
     def store(self, data):
         """ extracts metadata and inserts to the database """
-        laptops, learners, activities, instances, launches = Crop.querify(data)
+        laptops, learners, activities, instances, launches, sessions = Crop.querify(data)
 
         self._connection.ping(True)
         try:
@@ -96,6 +105,8 @@ class DataStore(object):
                 cursor.executemany(self.QUERY_INSTANCE, instances)
             if launches is not None:
                 cursor.executemany(self.QUERY_LAUNCH, launches)
+            if sessions is not None:
+                cursor.executemany(self.QUERY_SESSION, sessions)
             self._connection.commit()
         except Exception as err:
             print err

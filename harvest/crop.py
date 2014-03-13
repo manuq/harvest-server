@@ -26,6 +26,7 @@ class Crop(object):
         activities = None
         instances = None
         launches = None
+        sessions = None
 
         # dijkstra... forgive me!
         laptops = [data[0]]
@@ -46,4 +47,9 @@ class Crop(object):
                         launches = []
                     launches.append([launch] + [instance[0]] + learners[0])
 
-        return laptops, learners, activities, instances, launches
+        for start_time, spent_time, in_sugar in data[4]:
+            if sessions is None:
+                sessions = []
+            sessions.append([start_time, spent_time, in_sugar] + [data[0][0]])
+
+        return laptops, learners, activities, instances, launches, sessions
