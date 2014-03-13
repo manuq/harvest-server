@@ -47,9 +47,9 @@ class Crop(object):
                         launches = []
                     launches.append([launch] + [instance[0]] + learners[0])
 
-        for start_time, spent_time, in_sugar in data[4]:
+        for start_time, spent_time, is_sugar in data[4]:
             if sessions is None:
                 sessions = []
-            sessions.append([start_time, spent_time, in_sugar] + [data[0][0]])
+            sessions.append([start_time, spent_time, is_sugar] + [data[0][0]])
 
         return laptops, learners, activities, instances, launches, sessions
