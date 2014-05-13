@@ -46,26 +46,26 @@ class DataStore(object):
 
     QUERY_INSTANCE = 'INSERT INTO instances '\
                      '(object_id, filesize, creation_time, timestamp, '\
-                     'buddies, spent_time, share_scope, title_set_by_user, '\
+                     'buddies, share_scope, title_set_by_user, '\
                      'keep, mime_type, bundle_id, serial_number, '\
                      'birthdate, gender) '\
                      'values (%s, %s, %s, %s, %s, %s, '\
-                     '%s, %s, %s, %s, %s, %s, %s, %s) '\
+                     '%s, %s, %s, %s, %s, %s, %s) '\
                      'ON DUPLICATE KEY UPDATE ' \
                      'filesize = VALUES(filesize), '\
                      'timestamp = VALUES(timestamp), '\
                      'buddies = VALUES(buddies), '\
-                     'spent_time = VALUES(spent_time), '\
                      'share_scope = VALUES(share_scope), '\
                      'title_set_by_user = VALUES(title_set_by_user), '\
                      'keep = VALUES(keep), '\
                      'mime_type = VALUES(mime_type)'
 
     QUERY_LAUNCH = 'INSERT INTO launches '\
-                   '(timestamp, object_id, serial_number, birthdate, gender) '\
-                   'values (%s, %s, %s, %s, %s) '\
+                   '(timestamp, spent_time, object_id, serial_number, birthdate, gender) '\
+                   'values (%s, %s, %s, %s, %s, %s) '\
                    'ON DUPLICATE KEY UPDATE '\
                    'timestamp = VALUES(timestamp), '\
+                   'spent_time = VALUES(spent_time), '\
                    'object_id = VALUES(object_id), '\
                    'serial_number = VALUES(serial_number), '\
                    'birthdate = VALUES(birthdate), '\
