@@ -71,6 +71,17 @@ class DataStore(object):
                    'birthdate = VALUES(birthdate), '\
                    'gender = VALUES(gender)'
 
+    QUERY_GNOME_LAUNCH = 'INSERT INTO gnome_launches '\
+                         '(timestamp, spent_time, app_name, serial_number, birthdate, gender) '\
+                         'values (%s, %s, %s, %s, %s, %s) '\
+                         'ON DUPLICATE KEY UPDATE '\
+                         'timestamp = VALUES(timestamp), '\
+                         'spent_time = VALUES(spent_time), '\
+                         'app_name = VALUES(app_name), '\
+                         'serial_number = VALUES(serial_number), '\
+                         'birthdate = VALUES(birthdate), '\
+                         'gender = VALUES(gender)'
+
     QUERY_SESSION = 'INSERT INTO sessions '\
                     '(timestamp, spent_time, is_sugar, serial_number, birthdate, gender) '\
                     'values (%s, %s, %s, %s, %s, %s) '\
@@ -107,6 +118,8 @@ class DataStore(object):
                 cursor.executemany(self.QUERY_INSTANCE, instances)
             if launches is not None:
                 cursor.executemany(self.QUERY_LAUNCH, launches)
+            if gnome_launches is not None:
+                cursor.executemany(self.QUERY_GNOME_LAUNCH, gnome_launches)
             if sessions is not None:
                 cursor.executemany(self.QUERY_SESSION, sessions)
             self._connection.commit()

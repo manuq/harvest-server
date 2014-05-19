@@ -26,6 +26,7 @@ class Crop(object):
         activities = None
         instances = None
         launches = None
+        gnome_launches = None
         sessions = None
 
         # dijkstra... forgive me!
@@ -48,9 +49,14 @@ class Crop(object):
                     launches.append([launch, spent_time] +
                                     [instance[0]] + learners[0])
 
+        for timestamp, spent_time, app_name in data[3]:
+            if gnome_launches is None:
+                gnome_launches = []
+            gnome_launches.append([timestamp, spent_time, app_name] + learners[0])
+
         for timestamp, spent_time, is_sugar in data[4]:
             if sessions is None:
                 sessions = []
             sessions.append([timestamp, spent_time, is_sugar] + learners[0])
 
-        return laptops, learners, activities, instances, launches, None, sessions
+        return laptops, learners, activities, instances, launches, gnome_launches, sessions
