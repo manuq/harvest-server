@@ -28,6 +28,7 @@ class Crop(object):
         launches = None
         gnome_launches = None
         sessions = None
+        connectivity = None
 
         # dijkstra... forgive me!
         laptops = [data[0]]
@@ -59,4 +60,9 @@ class Crop(object):
                 sessions = []
             sessions.append([timestamp, spent_time, is_sugar] + learners[0])
 
-        return laptops, learners, activities, instances, launches, gnome_launches, sessions
+        for timestamp, ap, sl, br, ret, freq, rxm, txm, rxd, txd in data[5]:
+            if connectivity is None:
+                connectivity = []
+            connectivity.append([timestamp, ap, sl, br, ret, freq, rxm, txm, rxd, txd] + learners[0])
+
+        return laptops, learners, activities, instances, launches, gnome_launches, sessions, connectivity
