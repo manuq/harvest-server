@@ -93,27 +93,6 @@ class DataStore(object):
                     'birthdate = VALUES(birthdate), '\
                     'gender = VALUES(gender)'
 
-    QUERY_CONN = 'INSERT INTO connectivity '\
-                 '(timestamp, access_point_common, signal_level_median, '\
-                 'bit_rate_median, retries_added, frequency, rx_median, '\
-                 'tx_median, rx_added, tx_added, serial_number, birthdate, '\
-                 'gender) '\
-                 'values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) '\
-                 'ON DUPLICATE KEY UPDATE '\
-                 'timestamp = VALUES(timestamp), '\
-                 'access_point_common = VALUES(access_point_common), '\
-                 'signal_level_median = VALUES(signal_level_median), '\
-                 'bit_rate_median = VALUES(bit_rate_median), '\
-                 'retries_added = VALUES(retries_added), '\
-                 'frequency = VALUES(frequency), '\
-                 'rx_median = VALUES(rx_median), '\
-                 'tx_median = VALUES(tx_median), '\
-                 'rx_added = VALUES(rx_added), '\
-                 'tx_added = VALUES(tx_added), '\
-                 'serial_number = VALUES(serial_number), '\
-                 'birthdate = VALUES(birthdate), '\
-                 'gender = VALUES(gender)'
-
     def __init__(self, host, port, username, password, database):
         self._connection = MySQLdb.connect(host=host,
                                            port=port,
@@ -123,7 +102,7 @@ class DataStore(object):
 
     def store(self, data):
         """ extracts metadata and inserts to the database """
-        laptops, learners, activities, instances, launches, gnome_launches, sessions, connectivity = Crop.querify(data)
+        laptops, learners, activities, instances, launches, gnome_launches, sessions = Crop.querify(data)
 
         self._connection.ping(True)
         try:
@@ -143,8 +122,6 @@ class DataStore(object):
                 cursor.executemany(self.QUERY_GNOME_LAUNCH, gnome_launches)
             if sessions is not None:
                 cursor.executemany(self.QUERY_SESSION, sessions)
-            if connectivity is not None:
-                cursor.executemany(self.QUERY_CONN, connectivity)
             self._connection.commit()
         except Exception as err:
             print err
