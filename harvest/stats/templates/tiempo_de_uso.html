@@ -1,8 +1,11 @@
-<html>
-<h2>Uso de los equipos, promedios por semana</h2>
+{% extends "base.html" %}
+
+{% block titulo %}Uso de los equipos, promedios por semana{% end %}
+
+{% block contenido %}
 <ul>
 {% for row in data %}
   <li>{{ row[0] }}</li>
 {% end %}
 </ul>
-</html>
+{% end %}
