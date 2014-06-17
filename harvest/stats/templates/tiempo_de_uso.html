@@ -5,7 +5,23 @@
 {% block contenido %}
 <ul>
 {% for row in data %}
-  <li>{{ row[0] }}</li>
+  <li>{{ row[0] }}, {{ row[1] }}, {{ row[2] }}</li>
 {% end %}
 </ul>
+<div class="chart"></div>
+<script>
+var data = [7453.6364, 5595.0000];
+var format = d3.time.format("%H:%M");
+
+var scaleBar = d3.scale.linear().
+    domain([0, d3.max(data)]).
+    range([0, 420]);
+
+d3.select(".chart")
+  .selectAll("div")
+    .data(data)
+  .enter().append("div")
+    .style("width", function(d) { return scaleBar(d) + "px"; }).style("background-color", "blue")
+    .text(function(seconds) { return format(new Date(0, 0, 0, 0, 0, seconds)); });
+</script>
 {% end %}

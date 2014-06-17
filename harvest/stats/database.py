@@ -1,7 +1,7 @@
 import MySQLdb
 
 class Database():
-    QUERY_USO_SEMANAL = "SELECT TIME_FORMAT(SEC_TO_TIME(AVG(spent_time)),'%Hh %im') "\
+    QUERY_USO_SEMANAL = "SELECT YEAR(FROM_UNIXTIME(timestamp)), WEEK(FROM_UNIXTIME(timestamp)), AVG(spent_time) "\
                         "FROM sessions "\
                         "GROUP BY YEAR(FROM_UNIXTIME(timestamp)), WEEK(FROM_UNIXTIME(timestamp));"
 
