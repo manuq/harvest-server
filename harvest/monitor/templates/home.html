@@ -1,9 +1,13 @@
 {% extends "base.html" %}
 
-{% block titulo %}Uso de los equipos, promedios por semana{% end %}
-
 {% block contenido %}
+<h2>Uso de los equipos, promedios por semana</h2>
+
 <style>
+
+.chart {
+  background: #dfdfdf;
+}
 
 .chart rect {
   fill: steelblue;
@@ -23,37 +27,40 @@
 
 var width = 960;
 var height = 500;
+var margin = {top: 20, right: 30, bottom: 30, left: 40};
 
 var format = d3.time.format("%H:%M hs");
 
-var scaleBarY = d3.scale.linear()
+var barY = d3.scale.linear()
     .range([height, 0]);
 
-var scaleBarX = d3.scale.ordinal()
+var barX = d3.scale.ordinal()
     .rangeRoundBands([0, width], 0.1);
 
 var chart = d3.select(".chart")
-    .attr("width", width)
-    .attr("height", height);
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 
 $.getJSON("/json/tiempo_de_uso", function (data) {
-    scaleBarX.domain(data.map(function (d) { return d.year + d.week; }));
-    scaleBarY.domain([0, d3.max(data, function(d) { return d.spent_time; })]);
+    barX.domain(data.map(function (d) { return d.year + d.week; }));
+    barY.domain([0, d3.max(data, function(d) { return d.spent_time; })]);
 
     var bar = chart.selectAll("g")
         .data(data)
         .enter().append("g")
-        .attr("transform", function (d, i) { return "translate(" + scaleBarX(d.year + d.week) + ", 0)"; });
+        .attr("transform", function (d, i) { return "translate(" + barX(d.year + d.week) + ", 0)"; });
 
     bar.append("rect")
-        .attr("y", function (d) { return scaleBarY(d.spent_time) })
-        .attr("width", scaleBarX.rangeBand())
-        .attr("height", function (d) { return height - scaleBarY(d.spent_time) });
+        .attr("y", function (d) { return barY(d.spent_time) })
+        .attr("width", barX.rangeBand())
+        .attr("height", function (d) { return height - barY(d.spent_time) });
 
     bar.append("text")
-        .attr("x", scaleBarX.rangeBand() / 2)
-        .attr("y", function (d) { return scaleBarY(d.spent_time) + 3 })
+        .attr("x", barX.rangeBand() / 2)
+        .attr("y", function (d) { return barY(d.spent_time) + 3 })
         .attr("dy", ".75em")
         .text(function (d) { return format(new Date(0, 0, 0, 0, 0, d.spent_time)) });
 });
