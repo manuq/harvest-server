@@ -1,12 +1,18 @@
-from tornado.web import RequestHandler
+import json
+from tornado.web import RequestHandler, HTTPError
 
 
-class Handler(RequestHandler):
+class HomeHandler(RequestHandler):
+    def get(self):
+        self.render('home.html')
+
+class JsonHandler(RequestHandler):
     def initialize(self, database):
         self._database = database
 
-    def get(self):
-        data = self._database.get_uso_semanal()
-        # for row in data:
-        #     self.write("<p>Tiempo de uso: {0}</p>".format(row[0]))
-        self.render('tiempo_de_uso.html', data = data)
+    def get(self, query):
+        if query == 'tiempo_de_uso':
+            data = self._database.get_uso_semanal()
+            self.write(json.dumps(data))
+        else:
+            raise HTTPError(404)

@@ -16,4 +16,13 @@ class Database():
         self._connection.ping(True)
         cursor = self._connection.cursor()
         cursor.execute(self.QUERY_USO_SEMANAL)
-        return cursor.fetchall()
+
+        result = []
+        for row in cursor.fetchall():
+            result.append({
+                'year': row[0],
+                'week': row[1],
+                'spent_time': int(row[2]),
+            })
+
+        return result

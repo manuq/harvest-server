@@ -5,7 +5,7 @@ from ConfigParser import ConfigParser
 import tornado.ioloop
 import tornado.web
 import tornado.httpserver
-from harvest.monitor.handler import Handler
+from harvest.monitor.handler import HomeHandler, JsonHandler
 from harvest.monitor.database import Database
 
 
@@ -23,7 +23,8 @@ class Application(tornado.web.Application):
             config.get('datastore', 'database'))
 
         handlers = [
-            (r"/", Handler, {'database': database}),
+            (r"/", HomeHandler),
+            (r"/json/([^/]+)", JsonHandler, {'database': database}),
         ]
 
         settings = {
