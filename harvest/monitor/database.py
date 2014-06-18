@@ -1,8 +1,11 @@
 import MySQLdb
 
 class Database():
-    QUERY_USO_SEMANAL = "SELECT YEAR(FROM_UNIXTIME(timestamp)), WEEK(FROM_UNIXTIME(timestamp)), AVG(spent_time) "\
-                        "FROM sessions "\
+    QUERY_USO_SEMANAL = "SELECT YEAR(FROM_UNIXTIME(timestamp)), "\
+                        "WEEK(FROM_UNIXTIME(timestamp)), "\
+                        "SEC_TO_TIME(SUM(spent_time) / COUNT(DISTINCT sessions.serial_number)) "\
+                        "FROM sessions, laptops "\
+                        "WHERE sessions.serial_number = laptops.serial_number "\
                         "GROUP BY YEAR(FROM_UNIXTIME(timestamp)), WEEK(FROM_UNIXTIME(timestamp));"
 
     def __init__(self, host, port, username, password, database):
@@ -22,7 +25,7 @@ class Database():
             result.append({
                 'year': row[0],
                 'week': row[1],
-                'spent_time': int(row[2]),
+                'spent_time': row[2].total_seconds(),
             })
 
         return result
