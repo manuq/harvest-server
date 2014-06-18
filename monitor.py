@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 
 import os
-import ConfigParser
+from ConfigParser import ConfigParser
 import tornado.ioloop
 import tornado.web
 import tornado.httpserver
-import harvest.stats.handler
-import harvest.stats.database
+from harvest.monitor.handler import Handler
+from harvest.monitor.database import Database
 
 
 SCRIPT_PATH = os.path.dirname(os.path.realpath(__file__))
@@ -14,13 +14,21 @@ SCRIPT_PATH = os.path.dirname(os.path.realpath(__file__))
 
 class Application(tornado.web.Application):
     def __init__(self):
+
+        database = Database(
+            config.get('datastore', 'host'),
+            config.getint('datastore', 'port'),
+            config.get('datastore', 'username'),
+            config.get('datastore', 'password'),
+            config.get('datastore', 'database'))
+
         handlers = [
-            (r"/", harvest.stats.handler.Handler, {'database': database}),
+            (r"/", Handler, {'database': database}),
         ]
 
         settings = {
             'template_path': os.path.join(SCRIPT_PATH,
-                                          'harvest/stats/templates/'),
+                                          'harvest/monitor/templates/'),
         }
 
         tornado.web.Application.__init__(self, handlers, **settings)
@@ -28,15 +36,8 @@ class Application(tornado.web.Application):
 
 if __name__ == "__main__":
     config_path = os.path.join(SCRIPT_PATH, 'etc/harvest.cfg')
-    config = ConfigParser.ConfigParser()
+    config = ConfigParser()
     config.read(config_path)
-
-    database = harvest.stats.database.Database(
-        config.get('datastore', 'host'),
-        config.getint('datastore', 'port'),
-        config.get('datastore', 'username'),
-        config.get('datastore', 'password'),
-        config.get('datastore', 'database'))
 
     application = Application()
     http_server = tornado.httpserver.HTTPServer(application)
