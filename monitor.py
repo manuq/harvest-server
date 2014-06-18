@@ -28,6 +28,8 @@ class Application(tornado.web.Application):
         ]
 
         settings = {
+            'debug': True,
+            'autoreload': True,
             'template_path': os.path.join(SCRIPT_PATH,
                                           'harvest/monitor/templates/'),
         }

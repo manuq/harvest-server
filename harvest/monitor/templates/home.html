@@ -12,7 +12,7 @@
 .chart text {
   fill: white;
   font: 10px sans-serif;
-  text-anchor: end;
+  text-anchor: middle;
 }
 
 </style>
@@ -21,36 +21,40 @@
 
 <script>
 
-var width = 420;
-var barHeight = 20;
+var width = 960;
+var height = 500;
 
 var format = d3.time.format("%H:%M hs");
 
-var scaleBar = d3.scale.linear()
-    .range([0, width]);
+var scaleBarY = d3.scale.linear()
+    .range([height, 0]);
+
+var scaleBarX = d3.scale.ordinal()
+    .rangeRoundBands([0, width], 0.1);
 
 var chart = d3.select(".chart")
     .attr("width", width)
+    .attr("height", height);
 
 
 $.getJSON("/json/tiempo_de_uso", function (data) {
-    scaleBar.domain([0, d3.max(data, function(d) { return d.spent_time; })]);
-
-    chart.attr("height", barHeight * data.length);
+    scaleBarX.domain(data.map(function (d) { return d.year + d.week; }));
+    scaleBarY.domain([0, d3.max(data, function(d) { return d.spent_time; })]);
 
     var bar = chart.selectAll("g")
         .data(data)
         .enter().append("g")
-        .attr("transform", function (d, i) { return "translate(0," + i * barHeight + ")"; });
+        .attr("transform", function (d, i) { return "translate(" + scaleBarX(d.year + d.week) + ", 0)"; });
 
     bar.append("rect")
-        .attr("width", function (d) { return scaleBar(d.spent_time) })
-        .attr("height", barHeight - 1);
+        .attr("y", function (d) { return scaleBarY(d.spent_time) })
+        .attr("width", scaleBarX.rangeBand())
+        .attr("height", function (d) { return height - scaleBarY(d.spent_time) });
 
     bar.append("text")
-        .attr("x", function (d) { return scaleBar(d.spent_time) - 3 })
-        .attr("y", barHeight / 2)
-        .attr("dy", ".35em")
+        .attr("x", scaleBarX.rangeBand() / 2)
+        .attr("y", function (d) { return scaleBarY(d.spent_time) + 3 })
+        .attr("dy", ".75em")
         .text(function (d) { return format(new Date(0, 0, 0, 0, 0, d.spent_time)) });
 });
 
