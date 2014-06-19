@@ -47,39 +47,25 @@ class DataStore(object):
                      'ON DUPLICATE KEY UPDATE '\
                      'bundle_id = VALUES(bundle_id)'
 
-    QUERY_INSTANCE = 'INSERT INTO instances '\
-                     '(object_id, filesize, creation_time, timestamp, '\
-                     'buddies, share_scope, title_set_by_user, '\
-                     'keep, mime_type, bundle_id, serial_number, '\
-                     'birthdate, gender) '\
-                     'values (%s, %s, %s, %s, %s, %s, '\
-                     '%s, %s, %s, %s, %s, %s, %s) '\
-                     'ON DUPLICATE KEY UPDATE ' \
-                     'filesize = VALUES(filesize), '\
-                     'timestamp = VALUES(timestamp), '\
-                     'buddies = VALUES(buddies), '\
-                     'share_scope = VALUES(share_scope), '\
-                     'title_set_by_user = VALUES(title_set_by_user), '\
-                     'keep = VALUES(keep), '\
-                     'mime_type = VALUES(mime_type)'
-
     QUERY_LAUNCH = 'INSERT INTO launches '\
-                   '(timestamp, spent_time, object_id, serial_number, birthdate, gender) '\
-                   'values (%s, %s, %s, %s, %s, %s) '\
+                   '(timestamp, spent_time, launches_number, bundle_id, serial_number, birthdate, gender) '\
+                   'values (%s, %s, %s, %s, %s, %s, %s) '\
                    'ON DUPLICATE KEY UPDATE '\
                    'timestamp = VALUES(timestamp), '\
                    'spent_time = VALUES(spent_time), '\
-                   'object_id = VALUES(object_id), '\
+                   'launches_number = VALUES(launches_number), '\
+                   'bundle_id = VALUES(bundle_id), '\
                    'serial_number = VALUES(serial_number), '\
                    'birthdate = VALUES(birthdate), '\
                    'gender = VALUES(gender)'
 
     QUERY_GNOME_LAUNCH = 'INSERT INTO gnome_launches '\
-                         '(timestamp, spent_time, app_name, serial_number, birthdate, gender) '\
-                         'values (%s, %s, %s, %s, %s, %s) '\
+                         '(timestamp, spent_time, launches_number, app_name, serial_number, birthdate, gender) '\
+                         'values (%s, %s, %s, %s, %s, %s, %s) '\
                          'ON DUPLICATE KEY UPDATE '\
                          'timestamp = VALUES(timestamp), '\
                          'spent_time = VALUES(spent_time), '\
+                         'launches_number = VALUES(launches_number), '\
                          'app_name = VALUES(app_name), '\
                          'serial_number = VALUES(serial_number), '\
                          'birthdate = VALUES(birthdate), '\
@@ -105,7 +91,7 @@ class DataStore(object):
 
     def store(self, data):
         """ extracts metadata and inserts to the database """
-        laptops, learners, activities, instances, launches, gnome_launches, sessions = Crop.querify(data)
+        laptops, learners, activities, launches, gnome_launches, sessions = Crop.querify(data)
 
         self._connection.ping(True)
         try:
@@ -117,8 +103,6 @@ class DataStore(object):
                 cursor.executemany(self.QUERY_LEARNER, learners)
             if activities is not None:
                 cursor.executemany(self.QUERY_ACTIVITY, activities)
-            if instances is not None:
-                cursor.executemany(self.QUERY_INSTANCE, instances)
             if launches is not None:
                 cursor.executemany(self.QUERY_LAUNCH, launches)
             if gnome_launches is not None:

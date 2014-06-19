@@ -24,7 +24,6 @@ class Crop(object):
         laptops = None
         learners = None
         activities = None
-        instances = None
         launches = None
         gnome_launches = None
         sessions = None
@@ -33,30 +32,24 @@ class Crop(object):
         laptops = [data[0]]
         learners = [[data[0][0]] + data[1]]
 
-        for activity in data[2].keys():
-            if activities is None:
-                activities = []
+        if data[2]:
+            activities = []
+            launches = []
+
+        for activity, launch_data in data[2].items():
             activities.append([activity])
+            launches.append(launch_data + [activity] + learners[0])
 
-            for instance in data[2][activity]:
-                if instances is None:
-                    instances = []
-                instances.append(instance[:-1] + [activity] + learners[0])
+        if data[3]:
+            gnome_launches = []
 
-                for launch, spent_time in instance[-1]:
-                    if launches is None:
-                        launches = []
-                    launches.append([launch, spent_time] +
-                                    [instance[0]] + learners[0])
+        for gnome_launch_data in data[3]:
+            gnome_launches.append(gnome_launch_data + learners[0])
 
-        for timestamp, spent_time, app_name in data[3]:
-            if gnome_launches is None:
-                gnome_launches = []
-            gnome_launches.append([timestamp, spent_time, app_name] + learners[0])
+        if data[4]:
+            sessions = []
 
         for timestamp, spent_time, is_sugar in data[4]:
-            if sessions is None:
-                sessions = []
             sessions.append([timestamp, spent_time, is_sugar] + learners[0])
 
-        return laptops, learners, activities, instances, launches, gnome_launches, sessions
+        return laptops, learners, activities, launches, gnome_launches, sessions
