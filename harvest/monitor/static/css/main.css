@@ -1,0 +1,28 @@
+body {
+  margin-bottom: 5em;
+}
+
+.chart {
+  background: #dfdfdf;
+  width: 960px;
+  height: 500px;
+}
+
+.bar {
+  fill: steelblue;
+}
+
+.barText {
+  font: 11px sans-serif;
+  text-anchor: middle;
+}
+
+.axis text {
+  font: 10px sans-serif;
+}
+
+.axis path, .axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}

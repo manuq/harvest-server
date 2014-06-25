@@ -10,7 +10,8 @@ from harvest.monitor.database import Database
 
 
 SCRIPT_PATH = os.path.dirname(os.path.realpath(__file__))
-
+TEMPLATE_PATH = os.path.join(SCRIPT_PATH, 'harvest/monitor/templates/')
+STATIC_PATH = os.path.join(SCRIPT_PATH, 'harvest/monitor/static/')
 
 class Application(tornado.web.Application):
     def __init__(self):
@@ -23,15 +24,15 @@ class Application(tornado.web.Application):
             config.get('datastore', 'database'))
 
         handlers = [
-            (r"/", HomeHandler),
+            (r'/static/(.*)', tornado.web.StaticFileHandler, {'path': STATIC_PATH}),
             (r"/json/([^/]+)", JsonHandler, {'database': database}),
+            (r"/", HomeHandler),
         ]
 
         settings = {
             'debug': True,
             'autoreload': True,
-            'template_path': os.path.join(SCRIPT_PATH,
-                                          'harvest/monitor/templates/'),
+            'template_path': TEMPLATE_PATH,
         }
 
         tornado.web.Application.__init__(self, handlers, **settings)
