@@ -8,6 +8,14 @@ class Database():
                         "WHERE sessions.serial_number = laptops.serial_number "\
                         "GROUP BY YEAR(FROM_UNIXTIME(timestamp)), WEEK(FROM_UNIXTIME(timestamp));"
 
+    QUERY_RANKING_ACTS = "SELECT SUM(spent_time), "\
+                         "bundle_id "\
+                         "FROM launches "\
+                         "WHERE spent_time IS NOT NULL "\
+                         "GROUP BY bundle_id "\
+                         "ORDER BY SUM(spent_time) DESC "\
+                         "LIMIT 10;"
+
     def __init__(self, host, port, username, password, database):
         self._connection = MySQLdb.connect(host=host,
                                            port=port,
@@ -26,6 +34,23 @@ class Database():
                 'year': row[0],
                 'week': row[1],
                 'spent_time': row[2].total_seconds(),
+            })
+
+        return result
+
+    def get_ranking_acts(self):
+        self._connection.ping(True)
+        cursor = self._connection.cursor()
+        cursor.execute(self.QUERY_RANKING_ACTS)
+
+        def name_from_bundle(bundle_id):
+            return bundle_id.split('.')[-1]
+
+        result = []
+        for row in cursor.fetchall():
+            result.append({
+                'spent_time': int(row[0]),
+                'bundle_id': name_from_bundle(row[1]),
             })
 
         return result
