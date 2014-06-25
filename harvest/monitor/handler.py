@@ -17,5 +17,8 @@ class JsonHandler(RequestHandler):
         elif query == 'ranking_actividades':
             data = self._database.get_ranking_acts()
             self.write(json.dumps(data))
+        elif query == 'ranking_aplicaciones':
+            data = self._database.get_ranking_apps()
+            self.write(json.dumps(data))
         else:
             raise HTTPError(404)

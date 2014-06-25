@@ -58,7 +58,7 @@ function crearTiempoDeUso() {
             });
 
         bar.append("rect")
-            .attr("class", "bar")
+            .attr("class", "bar gnome")
             .attr("y", function(d) {
                 return barY(d.spent_time)
             })
@@ -94,11 +94,16 @@ function crearRankingActs() {
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     $.getJSON("/json/ranking_actividades", function(data) {
-        console.log(data);
-
-        barX.domain(data.map(function(d) {
+        var domain = data.map(function(d) {
             return d.bundle_id;
-        }));
+        })
+
+        var missing = 10 - domain.length;
+        for (var i = 0; i < missing; i++) {
+            domain.push(i);
+        }
+
+        barX.domain(domain);
         barY.domain([0, d3.max(data, function(d) {
             return d.spent_time;
         })]);
@@ -134,5 +139,65 @@ function crearRankingActs() {
     });
 }
 
+function crearRankingApps() {
+    var barY = d3.scale.linear()
+        .range([height, 0]);
+
+    var barX = d3.scale.ordinal()
+        .rangeRoundBands([0, width], 0.1);
+
+    var chart = d3.select(".chart.ranking-apps")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    $.getJSON("/json/ranking_aplicaciones", function(data) {
+        var domain = data.map(function(d) {
+            return d.bundle_id;
+        });
+
+        var missing = 10 - domain.length;
+        for (var i = 0; i < missing; i++) {
+            domain.push(i);
+        }
+
+        barX.domain(domain);
+        barY.domain([0, d3.max(data, function(d) {
+            return d.spent_time;
+        })]);
+
+        var bar = chart.selectAll(".bar")
+            .data(data)
+            .enter().append("g")
+            .attr("transform", function(d, i) {
+                return "translate(" + barX(d.bundle_id) + ", 0)";
+            });
+
+        bar.append("rect")
+            .attr("class", "bar gnome")
+            .attr("y", function(d) {
+                return barY(d.spent_time)
+            })
+            .attr("width", barX.rangeBand())
+            .attr("height", function(d) {
+                return height - barY(d.spent_time)
+            });
+
+        bar.append("text")
+            .attr("class", "barText")
+            .attr("x", barX.rangeBand() / 2)
+            .attr("y", function(d) {
+                return barY(d.spent_time) - 3
+            })
+            .attr("dy", "-0.5em")
+            .text(function(d) {
+                return d.bundle_id
+            });
+
+    });
+}
+
 crearTiempoDeUso();
 crearRankingActs();
+crearRankingApps();

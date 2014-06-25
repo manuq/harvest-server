@@ -16,6 +16,14 @@ class Database():
                          "ORDER BY SUM(spent_time) DESC "\
                          "LIMIT 10;"
 
+    QUERY_RANKING_APPS = "SELECT SUM(spent_time), "\
+                         "app_name "\
+                         "FROM gnome_launches "\
+                         "WHERE spent_time IS NOT NULL "\
+                         "GROUP BY app_name "\
+                         "ORDER BY SUM(spent_time) DESC "\
+                         "LIMIT 10;"
+
     def __init__(self, host, port, username, password, database):
         self._connection = MySQLdb.connect(host=host,
                                            port=port,
@@ -51,6 +59,20 @@ class Database():
             result.append({
                 'spent_time': int(row[0]),
                 'bundle_id': name_from_bundle(row[1]),
+            })
+
+        return result
+
+    def get_ranking_apps(self):
+        self._connection.ping(True)
+        cursor = self._connection.cursor()
+        cursor.execute(self.QUERY_RANKING_APPS)
+
+        result = []
+        for row in cursor.fetchall():
+            result.append({
+                'spent_time': int(row[0]),
+                'bundle_id': row[1],
             })
 
         return result
