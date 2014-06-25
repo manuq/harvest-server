@@ -1,12 +1,32 @@
 import MySQLdb
 
 class Database():
-    QUERY_USO_SEMANAL = "SELECT YEAR(FROM_UNIXTIME(timestamp)), "\
-                        "WEEK(FROM_UNIXTIME(timestamp)), "\
-                        "SEC_TO_TIME(SUM(spent_time) / COUNT(DISTINCT sessions.serial_number)) "\
-                        "FROM sessions, laptops "\
-                        "WHERE sessions.serial_number = laptops.serial_number "\
-                        "GROUP BY YEAR(FROM_UNIXTIME(timestamp)), WEEK(FROM_UNIXTIME(timestamp));"
+    # QUERY_USO_SEMANAL = "SELECT YEAR(FROM_UNIXTIME(timestamp)), "\
+    #                     "WEEK(FROM_UNIXTIME(timestamp)), "\
+    #                     "SEC_TO_TIME(SUM(spent_time) / COUNT(DISTINCT sessions.serial_number)) "\
+    #                     "FROM sessions, laptops "\
+    #                     "WHERE sessions.serial_number = laptops.serial_number "\
+    #                     "GROUP BY YEAR(FROM_UNIXTIME(timestamp)), WEEK(FROM_UNIXTIME(timestamp));"
+
+    QUERY_USO_SEMANAL = "SELECT x.year, x.week, spent_sugar, spent_gnome FROM ( "\
+                        "  SELECT SEC_TO_TIME(SUM(spent_time) / COUNT(DISTINCT sessions.serial_number)) AS spent_sugar, "\
+                        "  YEAR(FROM_UNIXTIME(timestamp)) AS year, "\
+                        "  WEEK(FROM_UNIXTIME(timestamp)) AS week "\
+                        "  FROM sessions, laptops "\
+                        "  WHERE is_sugar = 1 "\
+                        "  AND sessions.serial_number = laptops.serial_number "\
+                        "  GROUP BY YEAR(FROM_UNIXTIME(timestamp)), WEEK(FROM_UNIXTIME(timestamp)) "\
+                        ") x "\
+                        "LEFT JOIN ( "\
+                        "  SELECT SEC_TO_TIME(SUM(spent_time) / COUNT(DISTINCT sessions.serial_number)) AS spent_gnome, "\
+                        "  YEAR(FROM_UNIXTIME(timestamp)) AS year, "\
+                        "  WEEK(FROM_UNIXTIME(timestamp)) AS week "\
+                        "  FROM sessions, laptops "\
+                        "  WHERE is_sugar = 0 "\
+                        "  AND sessions.serial_number = laptops.serial_number "\
+                        "  GROUP BY YEAR(FROM_UNIXTIME(timestamp)), WEEK(FROM_UNIXTIME(timestamp)) "\
+                        ") y "\
+                        "ON x.week = y.week AND x.year = y.year;"
 
     QUERY_RANKING_ACTS = "SELECT SUM(spent_time), "\
                          "bundle_id "\
@@ -36,12 +56,18 @@ class Database():
         cursor = self._connection.cursor()
         cursor.execute(self.QUERY_USO_SEMANAL)
 
+        def total_seconds(time):
+            if time is None:
+                return 0
+            return time.total_seconds()
+
         result = []
         for row in cursor.fetchall():
             result.append({
                 'year': row[0],
                 'week': row[1],
-                'spent_time': row[2].total_seconds(),
+                'spent_sugar': total_seconds(row[2]),
+                'spent_gnome': total_seconds(row[3]),
             })
 
         return result
@@ -72,7 +98,7 @@ class Database():
         for row in cursor.fetchall():
             result.append({
                 'spent_time': int(row[0]),
-                'bundle_id': row[1],
+                'app_name': row[1],
             })
 
         return result

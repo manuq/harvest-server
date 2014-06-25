@@ -8,16 +8,26 @@ body {
   height: 500px;
 }
 
-.bar {
+.bar, .slice {
+  fill: #aaa;
+}
+
+.bar.gnome, .slice.gnome {
   fill: steelblue;
 }
 
-.bar.sugar {
+.bar.sugar, .slice.sugar {
   fill: greenyellow;
 }
 
 .barText {
   font: 11px sans-serif;
+  text-anchor: middle;
+}
+
+.sliceText {
+  fill: #000;
+  font: 13px sans-serif;
   text-anchor: middle;
 }
 

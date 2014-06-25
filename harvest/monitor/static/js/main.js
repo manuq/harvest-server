@@ -6,6 +6,7 @@ var margin = {
 };
 var width = 960 - margin.left - margin.right;
 var height = 500 - margin.top - margin.bottom;
+var radius = 180;
 
 var formato_hora = d3.time.format("%H:%M hs");
 
@@ -38,7 +39,7 @@ function crearTiempoDeUso() {
             return d.year + ', ' + d.week;
         }));
         barY.domain([0, d3.max(data, function(d) {
-            return d.spent_time;
+            return d.spent_sugar + d.spent_gnome;
         })]);
 
         chart.append("g")
@@ -60,24 +61,82 @@ function crearTiempoDeUso() {
         bar.append("rect")
             .attr("class", "bar gnome")
             .attr("y", function(d) {
-                return barY(d.spent_time)
+                return barY(d.spent_gnome)
             })
             .attr("width", barX.rangeBand())
             .attr("height", function(d) {
-                return height - barY(d.spent_time)
+                return height - barY(d.spent_gnome)
+            });
+
+        bar.append("rect")
+            .attr("class", "bar sugar")
+            .attr("y", function(d) {
+                return barY(d.spent_sugar + d.spent_gnome)
+            })
+            .attr("width", barX.rangeBand())
+            .attr("height", function(d) {
+                return height - barY(d.spent_sugar)
             });
 
         bar.append("text")
             .attr("class", "barText")
             .attr("x", barX.rangeBand() / 2)
             .attr("y", function(d) {
-                return barY(d.spent_time) - 3
+                return barY(d.spent_sugar + d.spent_gnome) - 3
             })
             .attr("dy", "-0.5em")
             .text(function(d) {
-                return formato_hora(new Date(0, 0, 0, 0, 0, d.spent_time))
+                return formato_hora(new Date(0, 0, 0, 0, 0, d.spent_sugar + d.spent_gnome))
             });
     });
+}
+
+function crearUsoSugarGnome() {
+    var data = [{'session': 'Sugar', 'value': 12356},
+                {'session': 'GNOME', 'value': 9356}];
+
+    var chart = d3.select(".chart.sugar-gnome")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .data(data)
+        .attr("transform", "translate(" + (width + margin.left + margin.right) / 2 + "," + (height + margin.top + margin.bottom) / 2 + ")");
+
+    var arc = d3.svg.arc()
+        .innerRadius(0)
+        .outerRadius(radius);
+
+    var pie = d3.layout.pie()
+        .value(function(d) {
+            return d.value;
+        });
+
+     var arcs = chart.selectAll(".slice")
+        .data(pie(data))
+        .enter()
+        .append("g")
+        .attr("class", function(d) {
+            if (d.data.session == 'Sugar') {
+                return "slice sugar";
+            } else {
+                return "slice gnome";
+            }
+        });
+
+    arcs.append("path")
+        .attr("d", arc)
+        .attr("class", "sugar");
+
+    arcs.append("text")
+        .attr("class", "sliceText")
+        .attr("transform", function(d) {
+            return "translate(" + arc.centroid(d) + ")";
+        })
+        .attr("dy", ".35em")
+        .text(function(d) {
+            return d.data.session;
+        });
+
 }
 
 function crearRankingActs() {
@@ -154,7 +213,7 @@ function crearRankingApps() {
 
     $.getJSON("/json/ranking_aplicaciones", function(data) {
         var domain = data.map(function(d) {
-            return d.bundle_id;
+            return d.app_name;
         });
 
         var missing = 10 - domain.length;
@@ -171,7 +230,7 @@ function crearRankingApps() {
             .data(data)
             .enter().append("g")
             .attr("transform", function(d, i) {
-                return "translate(" + barX(d.bundle_id) + ", 0)";
+                return "translate(" + barX(d.app_name) + ", 0)";
             });
 
         bar.append("rect")
@@ -192,12 +251,13 @@ function crearRankingApps() {
             })
             .attr("dy", "-0.5em")
             .text(function(d) {
-                return d.bundle_id
+                return d.app_name
             });
 
     });
 }
 
 crearTiempoDeUso();
+crearUsoSugarGnome();
 crearRankingActs();
 crearRankingApps();
