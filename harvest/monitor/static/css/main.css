@@ -12,6 +12,10 @@ body {
   fill: steelblue;
 }
 
+.bar.sugar {
+  fill: greenyellow;
+}
+
 .barText {
   font: 11px sans-serif;
   text-anchor: middle;
