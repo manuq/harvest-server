@@ -92,14 +92,10 @@ function crearTiempoDeUso() {
 }
 
 function crearUsoSugarGnome() {
-    var data = [{'session': 'Sugar', 'value': 12356},
-                {'session': 'GNOME', 'value': 9356}];
-
     var chart = d3.select(".chart.sugar-gnome")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
         .append("g")
-        .data(data)
         .attr("transform", "translate(" + (width + margin.left + margin.right) / 2 + "," + (height + margin.top + margin.bottom) / 2 + ")");
 
     var arc = d3.svg.arc()
@@ -111,31 +107,35 @@ function crearUsoSugarGnome() {
             return d.value;
         });
 
-     var arcs = chart.selectAll(".slice")
-        .data(pie(data))
-        .enter()
-        .append("g")
-        .attr("class", function(d) {
-            if (d.data.session == 'Sugar') {
-                return "slice sugar";
-            } else {
-                return "slice gnome";
-            }
-        });
+    $.getJSON("/json/uso_sugar_gnome", function(data) {
 
-    arcs.append("path")
-        .attr("d", arc)
-        .attr("class", "sugar");
+        var arcs = chart.selectAll(".slice")
+            .data(pie(data))
+            .enter()
+            .append("g")
+            .attr("class", function(d) {
+                if (d.data.session == 'Sugar') {
+                    return "slice sugar";
+                } else {
+                    return "slice gnome";
+                }
+            });
 
-    arcs.append("text")
-        .attr("class", "sliceText")
-        .attr("transform", function(d) {
-            return "translate(" + arc.centroid(d) + ")";
-        })
-        .attr("dy", ".35em")
-        .text(function(d) {
-            return d.data.session;
-        });
+        arcs.append("path")
+            .attr("d", arc)
+            .attr("class", "sugar");
+
+        arcs.append("text")
+            .attr("class", "sliceText")
+            .attr("transform", function(d) {
+                return "translate(" + arc.centroid(d) + ")";
+            })
+            .attr("dy", ".35em")
+            .text(function(d) {
+                return d.data.session;
+            });
+
+    });
 
 }
 

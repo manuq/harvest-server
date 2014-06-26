@@ -28,6 +28,8 @@ class Database():
                         ") y "\
                         "ON x.week = y.week AND x.year = y.year;"
 
+    QUERY_SUGAR_GNOME = "SELECT SUM(spent_time), is_sugar FROM sessions GROUP BY is_sugar;"
+
     QUERY_RANKING_ACTS = "SELECT SUM(spent_time), "\
                          "bundle_id "\
                          "FROM launches "\
@@ -68,6 +70,26 @@ class Database():
                 'week': row[1],
                 'spent_sugar': total_seconds(row[2]),
                 'spent_gnome': total_seconds(row[3]),
+            })
+
+        return result
+
+    def get_uso_sugar_gnome(self):
+        self._connection.ping(True)
+        cursor = self._connection.cursor()
+        cursor.execute(self.QUERY_SUGAR_GNOME)
+
+        def get_session(is_sugar):
+            if is_sugar:
+                return "Sugar"
+            else:
+                return "GNOME"
+
+        result = []
+        for row in cursor.fetchall():
+            result.append({
+                'value': int(row[0]),
+                'session': get_session(row[1]),
             })
 
         return result
