@@ -1,12 +1,12 @@
 [["8bfe93bb895fa79fd0e59550af8c97ff07863666", "110E8400-E29B-11D4-A716-446655440000", "XO-1.5", "20140115",
  "some OS build", 1380477009, 1380477010], [451612800, "male"], {
-"org.laptop.sugar.Jukebox": [1380477022, 421, 2],
-"org.sugarlabs.Clock": [1380476123, 3512, 1],
-"org.laptop.WebActivity": [1380476971, 6732, 5],
-"org.laptop.ImageViewerActivity": [1380477016, 25, 1],
-"org.laptop.Chat": [1380476992, 1311, 2],
-"org.laptop.Pippy": [1380477027, 5038, 2],
-"org.laptop.TurtleArtActivity": [1380477039, 14328, 2]
+"org.laptop.sugar.Jukebox": [[1380477022, 421, 2]],
+"org.sugarlabs.Clock": [[1380476123, 3512, 1]],
+"org.laptop.WebActivity": [[1380476971, 2000, 3], [1380479123, 4732, 2]],
+"org.laptop.ImageViewerActivity": [[1380477016, 25, 1]],
+"org.laptop.Chat": [[1380476992, 1311, 2]],
+"org.laptop.Pippy": [[1380477027, 5038, 2]],
+"org.laptop.TurtleArtActivity": [[1380477039, 14328, 2]]
 },
  [[1400501023, 3313, 1, "Terminal"], [1400501033, 527, 1, "inkscape"], [1400501069, 2500, 2, "inkscape"]],
  [[1394741547, 3, true], [1394741587, null, false], [1394741626, 3, true], [1394741683, null, true]],

@@ -36,9 +36,10 @@ class Crop(object):
             activities = []
             launches = []
 
-        for activity, launch_data in data[2].items():
+        for activity, data_list in data[2].items():
             activities.append([activity])
-            launches.append(launch_data + [activity] + learners[0])
+            for launch_data in data_list:
+                launches.append(launch_data + [activity] + learners[0])
 
         if data[3]:
             gnome_launches = []
