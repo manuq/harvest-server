@@ -1,0 +1,11 @@
+INSERT INTO activities VALUES ('org.gnome.Labyrinth', 'Mapas mentales') ON DUPLICATE KEY UPDATE bundle_id = VALUES(bundle_id);
+INSERT INTO activities VALUES ('org.laptop.AbiWordActivity', 'Escribir') ON DUPLICATE KEY UPDATE bundle_id = VALUES(bundle_id);
+INSERT INTO activities VALUES ('org.laptop.Calculate', 'Calculadora') ON DUPLICATE KEY UPDATE bundle_id = VALUES(bundle_id);
+INSERT INTO activities VALUES ('org.laptop.Memorize', 'Memorizar') ON DUPLICATE KEY UPDATE bundle_id = VALUES(bundle_id);
+INSERT INTO activities VALUES ('org.laptop.Oficina', 'Pintar') ON DUPLICATE KEY UPDATE bundle_id = VALUES(bundle_id);
+INSERT INTO activities VALUES ('org.laptop.sugar.Jukebox', 'Máquina de discos') ON DUPLICATE KEY UPDATE bundle_id = VALUES(bundle_id);
+INSERT INTO activities VALUES ('org.laptop.TamTamEdit', 'TamTamEdit') ON DUPLICATE KEY UPDATE bundle_id = VALUES(bundle_id);
+INSERT INTO activities VALUES ('org.laptop.TamTamMini', 'TamTamMini') ON DUPLICATE KEY UPDATE bundle_id = VALUES(bundle_id);
+INSERT INTO activities VALUES ('org.laptop.Terminal', 'Terminal') ON DUPLICATE KEY UPDATE bundle_id = VALUES(bundle_id);
+INSERT INTO activities VALUES ('org.laptop.WebActivity', 'Navegar') ON DUPLICATE KEY UPDATE bundle_id = VALUES(bundle_id);
+INSERT INTO activities VALUES ('vu.lux.olpc.Speak', 'Hablar') ON DUPLICATE KEY UPDATE bundle_id = VALUES(bundle_id);

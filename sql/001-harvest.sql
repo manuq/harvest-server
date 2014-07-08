@@ -24,6 +24,7 @@ CREATE TABLE learners (
 
 CREATE TABLE activities (
   bundle_id VARCHAR(255),
+  activity_name VARCHAR(255),
   PRIMARY KEY (bundle_id)
 );
 
