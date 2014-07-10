@@ -14,6 +14,13 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
 
+codigos_tilo = {
+	"Xo-1.0" : 813, 
+	"Xo-1.5-high-school" : 818,
+	"Xo-1.5-lite" : 819,
+	"Xo-1.75" : 820,
+	"XO-4-Touch" : 888,		
+	}
 
 class Crop(object):
 
@@ -30,6 +37,9 @@ class Crop(object):
 
         # dijkstra... forgive me!
         laptops = [data[0]]
+	model = laptops[2]
+	laptops += [model]	
+	codigo = codigos_tilo.get(model)
         learners = [[data[0][0]] + data[1]]
 
         if data[2]:
