@@ -16,13 +16,13 @@
 
 # Chequear codigos reales
 codigos_tilo = {
-	"XO-1" : 813,
-	"XO-1.5-high-school" : 818,
-	"XO-1.5-lite" : 819,
-	"XO-1.75" : 820,
-	"XO-1.75HS" : 820,
-	"XO-4-Touch" : 888,
-	}
+    "XO-1": 813,
+    "XO-1.5-high-school": 818,
+    "XO-1.5-lite": 819,
+    "XO-1.75": 820,
+    "XO-1.75HS": 820,
+    "XO-4-Touch": 888,
+}
 
 class Crop(object):
 
@@ -38,8 +38,8 @@ class Crop(object):
         sessions = None
 
         # dijkstra... forgive me!
-	model = data[0][2]
-	codigo = codigos_tilo.get(model)
+        model = data[0][2]
+        codigo = codigos_tilo.get(model)
         laptops = [data[0] + [codigo]]
 
         learners = [[data[0][0]] + data[1]]

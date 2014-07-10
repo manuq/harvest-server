@@ -32,7 +32,7 @@ class DataStore(object):
                    'build = VALUES(build), '\
                    'updated = VALUES(updated), '\
                    'collected = VALUES(collected), '\
-		   'codigo_tilo = VALUES(codigo_tilo), '\
+                   'codigo_tilo = VALUES(codigo_tilo), '\
                    'stored = values(stored)'
 
     QUERY_LEARNER = 'INSERT INTO learners '\
