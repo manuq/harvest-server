@@ -1,3 +1,21 @@
+INSERT INTO gnome_alias VALUES ('gcalctool', 'Calculadora') ON DUPLICATE KEY UPDATE app_name = VALUES(app_name);
+INSERT INTO gnome_alias VALUES ('Firefox', 'Firefox') ON DUPLICATE KEY UPDATE app_name = VALUES(app_name);
+INSERT INTO gnome_alias VALUES ('Diccionario', 'Diccionario') ON DUPLICATE KEY UPDATE app_name = VALUES(app_name);
+INSERT INTO gnome_alias VALUES ('gedit', 'Editor de textos gedit') ON DUPLICATE KEY UPDATE app_name = VALUES(app_name);
+INSERT INTO gnome_alias VALUES ('Visor de libros electrónicos', 'Visor de libros electrónicos') ON DUPLICATE KEY UPDATE app_name = VALUES(app_name);
+INSERT INTO gnome_alias VALUES ('gthumb', 'Visor de imágenes gThumb') ON DUPLICATE KEY UPDATE app_name = VALUES(app_name);
+INSERT INTO gnome_alias VALUES ('Programa de manipulación de imágenes de GNU', 'Editor de imágenes GIMP') ON DUPLICATE KEY UPDATE app_name = VALUES(app_name);
+INSERT INTO gnome_alias VALUES ('Tux Paint', 'Tux Paint') ON DUPLICATE KEY UPDATE app_name = VALUES(app_name);
+INSERT INTO gnome_alias VALUES ('GeoGebra', 'GeoGebra') ON DUPLICATE KEY UPDATE app_name = VALUES(app_name);
+INSERT INTO gnome_alias VALUES ('Terminal', 'Terminal') ON DUPLICATE KEY UPDATE app_name = VALUES(app_name);
+INSERT INTO gnome_alias VALUES ('calibre', 'calibre') ON DUPLICATE KEY UPDATE app_name = VALUES(app_name);
+INSERT INTO gnome_alias VALUES ('Audacity', 'Audacity') ON DUPLICATE KEY UPDATE app_name = VALUES(app_name);
+INSERT INTO gnome_alias VALUES ('OpenOffice.org 3.3', 'OpenOffice') ON DUPLICATE KEY UPDATE app_name = VALUES(app_name);
+INSERT INTO gnome_alias VALUES ('LibreOffice 3.6', 'LibreOffice') ON DUPLICATE KEY UPDATE app_name = VALUES(app_name);
+INSERT INTO gnome_alias VALUES ('/usr/share/etoys/etoys.image', 'Etoys') ON DUPLICATE KEY UPDATE app_name = VALUES(app_name);
+INSERT INTO gnome_alias VALUES ('inkscape', 'Editor de gráficos Inkscape') ON DUPLICATE KEY UPDATE app_name = VALUES(app_name);
+INSERT INTO gnome_alias VALUES ('Web', 'Navegador Epiphany') ON DUPLICATE KEY UPDATE app_name = VALUES(app_name);
+
 INSERT INTO activities VALUES ('org.gnome.Labyrinth', 'Mapas mentales') ON DUPLICATE KEY UPDATE bundle_id = VALUES(bundle_id);
 INSERT INTO activities VALUES ('org.laptop.AbiWordActivity', 'Escribir') ON DUPLICATE KEY UPDATE bundle_id = VALUES(bundle_id);
 INSERT INTO activities VALUES ('org.laptop.Calculate', 'Calculadora') ON DUPLICATE KEY UPDATE bundle_id = VALUES(bundle_id);
