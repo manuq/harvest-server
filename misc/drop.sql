@@ -1,2 +1,2 @@
 DROP DATABASE IF EXISTS harvest;
-DROP USER 'harvest'@'localhost';
+DROP USER 'harvest'@'%';
