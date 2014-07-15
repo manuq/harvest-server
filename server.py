@@ -17,17 +17,29 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
 
 import os
+import time
+import signal
+from functools import partial
 from ConfigParser import ConfigParser
 
 from tornado.ioloop import IOLoop
 from tornado.httpserver import HTTPServer
 from tornado.web import Application
 from tornado.netutil import bind_sockets
-from tornado.process import fork_processes
 
 from harvest.handler import Handler
 from harvest.data_store import DataStore
 
+
+def signal_handler(server, loop, signum, frame):
+    loop.add_callback(partial(stop_server, server, loop))
+
+def stop_server(server, loop):
+    server.stop()
+    loop.add_timeout(time.time() + 5.0, partial(stop_loop, loop))
+
+def stop_loop(loop):
+    loop.stop()
 
 def main():
     script_path = os.path.dirname(os.path.realpath(__file__))
@@ -38,7 +50,6 @@ def main():
 
     sockets = bind_sockets(config.get('server', 'port'),
                            config.get('server', 'address'))
-    fork_processes(config.getint('server', 'instances'))
 
     datastore = DataStore(config.get('datastore', 'host'),
                           config.getint('datastore', 'port'),
@@ -57,7 +68,10 @@ def main():
                             'keyfile': config.get('server', 'keyfile')})
 
     server.add_sockets(sockets)
-    IOLoop.instance().start()
+    loop = IOLoop.instance()
+    signal.signal(signal.SIGTERM, partial(signal_handler, server, loop))
+    loop.start()
+
 
 if __name__ == "__main__":
     main()
