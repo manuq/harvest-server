@@ -7,7 +7,6 @@ database: harvest
 
 [server]
 address: 127.0.0.1
-port: 443
 certfile: /opt/harvest/etc/harvest.crt
 keyfile: /opt/harvest/etc/harvest.key
 api_key: harvest

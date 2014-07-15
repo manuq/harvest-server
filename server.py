@@ -26,9 +26,12 @@ from tornado.ioloop import IOLoop
 from tornado.httpserver import HTTPServer
 from tornado.web import Application
 from tornado.netutil import bind_sockets
-
+from tornado.options import define, options, parse_command_line
 from harvest.handler import Handler
 from harvest.data_store import DataStore
+
+
+define("port", default=443)
 
 
 def signal_handler(server, loop, signum, frame):
@@ -42,13 +45,14 @@ def stop_loop(loop):
     loop.stop()
 
 def main():
+    parse_command_line()
     script_path = os.path.dirname(os.path.realpath(__file__))
     config_path = os.path.join(script_path, 'etc/harvest.cfg')
 
     config = ConfigParser()
     config.read(config_path)
 
-    sockets = bind_sockets(config.get('server', 'port'),
+    sockets = bind_sockets(options.port,
                            config.get('server', 'address'))
 
     datastore = DataStore(config.get('datastore', 'host'),
