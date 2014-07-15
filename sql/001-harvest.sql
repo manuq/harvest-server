@@ -71,5 +71,5 @@ CREATE TABLE gnome_alias (
   PRIMARY KEY (app_name)
 );
 
-CREATE USER 'harvest'@'localhost' IDENTIFIED BY 'harvest';
-GRANT ALL PRIVILEGES ON harvest . * TO 'harvest'@'localhost';
+CREATE USER 'harvest'@'%' IDENTIFIED BY 'harvest';
+GRANT ALL PRIVILEGES ON harvest . * TO 'harvest'@'%';
