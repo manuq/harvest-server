@@ -5,20 +5,32 @@
 {% end %}
 
 {% block contenido %}
+<div class="container">
 <h2>Uso de los equipos, promedios por semana</h2>
 <p>Cuánto tiempo se usa cada equipo, en promedio, por semana.</p>
 <svg class="chart uso-semanal"></svg>
+<p><a class="btn btn-default" href="/csv/tiempo_de_uso.csv" download="tiempo_de_uso.csv">Exportar</a></p>
+</div>
 
+<div class="container">
 <h2>Porcentaje de uso de Sugar y GNOME</h2>
 <svg class="chart sugar-gnome"></svg>
+<p><a class="btn btn-default" href="/csv/uso_sugar_gnome.csv" download="uso_sugar_gnome.csv">Exportar</a></p>
+</div>
 
+<div class="container">
 <h2>Ranking de actividades Sugar</h2>
 <p>Las diez actividades Sugar más usadas, según promedio de horas semanales.</p>
 <svg class="chart ranking-acts"></svg>
+<p><a class="btn btn-default" href="/csv/ranking_actividades.csv" download="ranking_actividades.csv">Exportar</a></p>
+</div>
 
+<div class="container">
 <h2>Ranking de aplicaciones GNOME</h2>
 <p>Las diez aplicaciones GNOME más usadas, según promedio de horas semanales.</p>
 <svg class="chart ranking-apps"></svg>
+<p><a class="btn btn-default" href="/csv/ranking_aplicaciones.csv" download="ranking_aplicaciones.csv">Exportar</a></p>
+</div>
 
 <script src="/static/js/main.js"></script>
 {% end %}
