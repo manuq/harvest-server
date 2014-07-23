@@ -53,7 +53,7 @@ class Database():
                                            passwd=password,
                                            db=database)
 
-    def get_uso_semanal(self):
+    def get_tiempo_de_uso(self):
         self._connection.ping(True)
         cursor = self._connection.cursor()
         cursor.execute(self.QUERY_USO_SEMANAL)
@@ -97,7 +97,7 @@ class Database():
 
         return result
 
-    def get_ranking_acts(self):
+    def get_ranking_actividades(self):
         self._connection.ping(True)
         cursor = self._connection.cursor()
         cursor.execute(self.QUERY_RANKING_ACTS)
@@ -114,7 +114,7 @@ class Database():
 
         return result
 
-    def get_ranking_apps(self):
+    def get_ranking_aplicaciones(self):
         self._connection.ping(True)
         cursor = self._connection.cursor()
         cursor.execute(self.QUERY_RANKING_APPS)
