@@ -17,11 +17,10 @@
 # Chequear codigos reales
 codigos_tilo = {
     "XO-1": 813,
-    "XO-1.5-high-school": 818,
-    "XO-1.5-lite": 819,
+    "XO-1.5": 818,
+    "XO-1.5HS": 819,
     "XO-1.75": 820,
-    "XO-1.75HS": 820,
-    "XO-4-Touch": 888,
+    "XO-4 Touch": 888,
 }
 
 class Crop(object):
