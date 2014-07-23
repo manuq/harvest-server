@@ -6,7 +6,12 @@ class HomeHandler(RequestHandler):
     def get(self):
         self.render('home.html')
 
-class JsonHandler(RequestHandler):
+
+class DataHandler(RequestHandler):
+    def __init__(self, output, application, request, **kwargs):
+        self._output = output
+        super(DataHandler, self).__init__(application, request, **kwargs)
+
     def initialize(self, database):
         self._database = database
 
@@ -14,16 +19,16 @@ class JsonHandler(RequestHandler):
         if self._database.is_not_valid(query):
             raise HTTPError(404)
 
-        content = self._database.get(query, output='json')
+        content = self._database.get(query, output=self._output)
         self.write(content)
 
-class CSVHandler(RequestHandler):
-    def initialize(self, database):
-        self._database = database
 
-    def get(self, query):
-        if self._database.is_not_valid(query):
-            raise HTTPError(404)
+class JsonHandler(DataHandler):
+    def __init__(self, application, request, **kwargs):
+        super(JsonHandler, self).__init__('json', application, request,
+                                          **kwargs)
 
-        content = self._database.get(query, output='csv')
-        self.write(content)
+
+class CSVHandler(DataHandler):
+    def __init__(self, application, request, **kwargs):
+        super(CSVHandler, self).__init__('csv', application, request, **kwargs)
