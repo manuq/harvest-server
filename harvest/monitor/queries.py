@@ -1,13 +1,17 @@
 import os
 
-SCRIPT_PATH = os.path.dirname(os.path.realpath(__file__))
+SQL_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'sql')
 
 _queries = {}
 
-_queries['tiempo_de_uso'] = open(os.path.join(SCRIPT_PATH, 'sql', 'tiempo_de_uso.sql')).read()
-_queries['uso_sugar_gnome'] = open(os.path.join(SCRIPT_PATH, 'sql', 'uso_sugar_gnome.sql')).read()
-_queries['ranking_actividades'] = open(os.path.join(SCRIPT_PATH, 'sql', 'ranking_actividades.sql')).read()
-_queries['ranking_aplicaciones'] = open(os.path.join(SCRIPT_PATH, 'sql', 'ranking_aplicaciones.sql')).read()
+def _insert_sql(filename):
+    query = os.path.splitext(filename)[0]
+    _queries[query] = open(os.path.join(SQL_PATH, filename)).read()
+
+
+for root, dirs, files in os.walk(SQL_PATH):
+    for filename in files:
+        _insert_sql(filename)
 
 
 def get_queries():
