@@ -11,9 +11,19 @@ class JsonHandler(RequestHandler):
         self._database = database
 
     def get(self, query):
-        method_name = 'get_' + query
-        if not hasattr(self._database, method_name):
+        if self._database.is_not_valid(query):
             raise HTTPError(404)
 
-        data = getattr(self._database, method_name)()
-        self.write(json.dumps(data))
+        content = self._database.get(query, output='json')
+        self.write(content)
+
+class CSVHandler(RequestHandler):
+    def initialize(self, database):
+        self._database = database
+
+    def get(self, query):
+        if self._database.is_not_valid(query):
+            raise HTTPError(404)
+
+        content = self._database.get(query, output='csv')
+        self.write(content)

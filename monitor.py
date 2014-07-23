@@ -5,7 +5,7 @@ from ConfigParser import ConfigParser
 import tornado.ioloop
 import tornado.web
 import tornado.httpserver
-from harvest.monitor.handler import HomeHandler, JsonHandler
+from harvest.monitor.handler import HomeHandler, JsonHandler, CSVHandler
 from harvest.monitor.database import Database
 
 
@@ -26,6 +26,7 @@ class Application(tornado.web.Application):
         handlers = [
             (r'/static/(.*)', tornado.web.StaticFileHandler, {'path': STATIC_PATH}),
             (r"/json/([^/]+)", JsonHandler, {'database': database}),
+            (r"/csv/([^/]+).csv", CSVHandler, {'database': database}),
             (r"/", HomeHandler),
         ]
 

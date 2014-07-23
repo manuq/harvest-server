@@ -1,51 +1,11 @@
 import MySQLdb
+import json
+import csv
+import StringIO
+import queries
+
 
 class Database():
-    # QUERY_USO_SEMANAL = "SELECT YEAR(FROM_UNIXTIME(timestamp)), "\
-    #                     "WEEK(FROM_UNIXTIME(timestamp)), "\
-    #                     "SEC_TO_TIME(SUM(spent_time) / COUNT(DISTINCT sessions.serial_number)) "\
-    #                     "FROM sessions, laptops "\
-    #                     "WHERE sessions.serial_number = laptops.serial_number "\
-    #                     "GROUP BY YEAR(FROM_UNIXTIME(timestamp)), WEEK(FROM_UNIXTIME(timestamp));"
-
-    QUERY_USO_SEMANAL = "SELECT x.year, x.week, spent_sugar, spent_gnome FROM ( "\
-                        "  SELECT SEC_TO_TIME(SUM(spent_time) / COUNT(DISTINCT sessions.serial_number)) AS spent_sugar, "\
-                        "  YEAR(FROM_UNIXTIME(timestamp)) AS year, "\
-                        "  WEEK(FROM_UNIXTIME(timestamp)) AS week "\
-                        "  FROM sessions, laptops "\
-                        "  WHERE is_sugar = 1 "\
-                        "  AND sessions.serial_number = laptops.serial_number "\
-                        "  GROUP BY YEAR(FROM_UNIXTIME(timestamp)), WEEK(FROM_UNIXTIME(timestamp)) "\
-                        ") x "\
-                        "LEFT JOIN ( "\
-                        "  SELECT SEC_TO_TIME(SUM(spent_time) / COUNT(DISTINCT sessions.serial_number)) AS spent_gnome, "\
-                        "  YEAR(FROM_UNIXTIME(timestamp)) AS year, "\
-                        "  WEEK(FROM_UNIXTIME(timestamp)) AS week "\
-                        "  FROM sessions, laptops "\
-                        "  WHERE is_sugar = 0 "\
-                        "  AND sessions.serial_number = laptops.serial_number "\
-                        "  GROUP BY YEAR(FROM_UNIXTIME(timestamp)), WEEK(FROM_UNIXTIME(timestamp)) "\
-                        ") y "\
-                        "ON x.week = y.week AND x.year = y.year;"
-
-    QUERY_SUGAR_GNOME = "SELECT SUM(spent_time), is_sugar FROM sessions GROUP BY is_sugar;"
-
-    QUERY_RANKING_ACTS = "SELECT SUM(spent_time), "\
-                         "bundle_id "\
-                         "FROM launches "\
-                         "WHERE spent_time IS NOT NULL "\
-                         "GROUP BY bundle_id "\
-                         "ORDER BY SUM(spent_time) DESC "\
-                         "LIMIT 10;"
-
-    QUERY_RANKING_APPS = "SELECT SUM(spent_time), "\
-                         "app_name "\
-                         "FROM gnome_launches "\
-                         "WHERE spent_time IS NOT NULL "\
-                         "GROUP BY app_name "\
-                         "ORDER BY SUM(spent_time) DESC "\
-                         "LIMIT 10;"
-
     def __init__(self, host, port, username, password, database):
         self._connection = MySQLdb.connect(host=host,
                                            port=port,
@@ -53,11 +13,29 @@ class Database():
                                            passwd=password,
                                            db=database)
 
-    def get_tiempo_de_uso(self):
+        self._queries = queries.get_queries()
+
+    def is_not_valid(self, query):
+        return query not in self._queries.keys()
+
+    def get(self, query, output='json'):
         self._connection.ping(True)
         cursor = self._connection.cursor()
-        cursor.execute(self.QUERY_USO_SEMANAL)
+        cursor.execute(self._queries[query])
 
+        if output == 'json':
+            method_name = '_json_' + query
+            assert hasattr(self, method_name)
+            data = getattr(self, method_name)(cursor)
+            return json.dumps(data)
+
+        elif output == 'csv':
+            output = StringIO.StringIO()
+            writer = csv.writer(output)
+            writer.writerows(cursor.fetchall())
+            return output.getvalue()
+
+    def _json_tiempo_de_uso(self, cursor):
         def total_seconds(time):
             if time is None:
                 return 0
@@ -74,11 +52,7 @@ class Database():
 
         return result
 
-    def get_uso_sugar_gnome(self):
-        self._connection.ping(True)
-        cursor = self._connection.cursor()
-        cursor.execute(self.QUERY_SUGAR_GNOME)
-
+    def _json_uso_sugar_gnome(self, cursor):
         def get_session(is_sugar):
             if is_sugar:
                 return "Sugar"
@@ -97,11 +71,7 @@ class Database():
 
         return result
 
-    def get_ranking_actividades(self):
-        self._connection.ping(True)
-        cursor = self._connection.cursor()
-        cursor.execute(self.QUERY_RANKING_ACTS)
-
+    def _json_ranking_actividades(self, cursor):
         def name_from_bundle(bundle_id):
             return bundle_id.split('.')[-1]
 
@@ -114,11 +84,7 @@ class Database():
 
         return result
 
-    def get_ranking_aplicaciones(self):
-        self._connection.ping(True)
-        cursor = self._connection.cursor()
-        cursor.execute(self.QUERY_RANKING_APPS)
-
+    def _json_ranking_aplicaciones(self, cursor):
         result = []
         for row in cursor.fetchall():
             result.append({
