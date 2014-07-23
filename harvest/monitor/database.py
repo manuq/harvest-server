@@ -87,8 +87,11 @@ class Database():
 
         result = []
         for row in cursor.fetchall():
+            value = 0
+            if row[0] is not None:
+                value = int(row[0])
             result.append({
-                'value': int(row[0]),
+                'value': value,
                 'session': get_session(row[1]),
             })
 
