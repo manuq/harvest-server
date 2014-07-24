@@ -27,7 +27,7 @@ class Database():
             method_name = '_json_' + query
             assert hasattr(self, method_name)
             data = getattr(self, method_name)(cursor)
-            return json.dumps(data)
+            return json.dumps(data, ensure_ascii=False, encoding="latin1")
 
         elif output == 'csv':
             output = StringIO.StringIO()
