@@ -15,6 +15,8 @@ INSERT INTO gnome_alias VALUES ('LibreOffice 3.6', 'LibreOffice') ON DUPLICATE K
 INSERT INTO gnome_alias VALUES ('/usr/share/etoys/etoys.image', 'Etoys') ON DUPLICATE KEY UPDATE app_name = VALUES(app_name);
 INSERT INTO gnome_alias VALUES ('inkscape', 'Editor de gráficos Inkscape') ON DUPLICATE KEY UPDATE app_name = VALUES(app_name);
 INSERT INTO gnome_alias VALUES ('Web', 'Navegador Epiphany') ON DUPLICATE KEY UPDATE app_name = VALUES(app_name);
+INSERT INTO gnome_alias VALUES ('npviewer.bin', 'Flash Player') ON DUPLICATE KEY UPDATE app_name = VALUES(app_name);
+INSERT INTO gnome_alias VALUES ('plugin-container', 'Plugin de Firefox') ON DUPLICATE KEY UPDATE app_name = VALUES(app_name);
 
 
 INSERT INTO activities VALUES ('uy.ceibal.GetBooksCeibalActivity', 'Biblioteca Ceibal') ON DUPLICATE KEY UPDATE bundle_id = VALUES(bundle_id);
@@ -47,4 +49,3 @@ INSERT INTO activities VALUES ('org.laptop.TamTamEdit', 'TamTamEdit') ON DUPLICA
 INSERT INTO activities VALUES ('org.laptop.TamTamMini', 'TamTamMini') ON DUPLICATE KEY UPDATE bundle_id = VALUES(bundle_id);
 INSERT INTO activities VALUES ('org.laptop.Terminal', 'Terminal') ON DUPLICATE KEY UPDATE bundle_id = VALUES(bundle_id);
 INSERT INTO activities VALUES ('vu.lux.olpc.Speak', 'Hablar') ON DUPLICATE KEY UPDATE bundle_id = VALUES(bundle_id);
-
