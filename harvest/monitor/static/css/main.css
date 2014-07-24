@@ -8,6 +8,16 @@ body {
   height: 500px;
 }
 
+span.sugar {
+  color: greenyellow;
+  font-weight: bold;
+}
+
+span.gnome {
+  color: steelblue;
+  font-weight: bold;
+}
+
 .bar, .slice {
   fill: #aaa;
 }
