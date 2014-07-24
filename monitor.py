@@ -5,7 +5,8 @@ from ConfigParser import ConfigParser
 import tornado.ioloop
 import tornado.web
 import tornado.httpserver
-from harvest.monitor.handler import HomeHandler, JsonHandler, CSVHandler
+from harvest.monitor.handler import HomeHandler, EvaluacionMonitoreoHandler
+from harvest.monitor.handler import JsonHandler, CSVHandler
 from harvest.monitor.database import Database
 
 
@@ -28,6 +29,8 @@ class Application(tornado.web.Application):
             (r"/json/([^/]+)", JsonHandler, {'database': database}),
             (r"/csv/([^/]+).csv", CSVHandler, {'database': database}),
             (r"/", HomeHandler),
+            (r"/evaluacion_y_monitoreo", EvaluacionMonitoreoHandler),
+
         ]
 
         settings = {

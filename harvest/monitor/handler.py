@@ -6,6 +6,10 @@ class HomeHandler(RequestHandler):
     def get(self):
         self.render('home.html')
 
+class EvaluacionMonitoreoHandler(RequestHandler):
+    def get(self):
+        self.render('evaluacion_y_monitoreo.html')
+
 
 class DataHandler(RequestHandler):
     def __init__(self, output, application, request, **kwargs):
