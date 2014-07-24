@@ -24,6 +24,9 @@ class DataHandler(RequestHandler):
             raise HTTPError(404)
 
         content = self._database.get(query, output=self._output)
+        if content is None:
+            raise HTTPError(404)
+
         self.write(content)
 
 

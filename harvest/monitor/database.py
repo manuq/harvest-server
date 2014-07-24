@@ -25,7 +25,9 @@ class Database():
 
         if output == 'json':
             method_name = '_json_' + query
-            assert hasattr(self, method_name)
+            if not hasattr(self, method_name):
+                return None
+
             data = getattr(self, method_name)(cursor)
             return json.dumps(data, ensure_ascii=False, encoding="latin1")
 
@@ -34,6 +36,9 @@ class Database():
             writer = csv.writer(output)
             writer.writerows(cursor.fetchall())
             return output.getvalue()
+
+        else:
+            return None
 
     def _json_tiempo_de_uso(self, cursor):
         def total_seconds(time):
