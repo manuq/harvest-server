@@ -57,7 +57,26 @@ class Database():
 
         return result
 
-    def _json_uso_sugar_gnome(self, cursor):
+    def _json_uso_sugar_gnome_duracion(self, cursor):
+        def get_session(is_sugar):
+            if is_sugar:
+                return "Sugar"
+            else:
+                return "GNOME"
+
+        result = []
+        for row in cursor.fetchall():
+            value = 0
+            if row[0] is not None:
+                value = int(row[0])
+            result.append({
+                'value': value,
+                'session': get_session(row[1]),
+            })
+
+        return result
+
+    def _json_uso_sugar_gnome_conteo(self, cursor):
         def get_session(is_sugar):
             if is_sugar:
                 return "Sugar"

@@ -91,8 +91,8 @@ function crearTiempoDeUso() {
     });
 }
 
-function crearUsoSugarGnome() {
-    var chart = d3.select(".chart.sugar-gnome")
+function crearUsoSugarGnomeDuracion() {
+    var chart = d3.select(".chart.sugar-gnome-duracion")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
         .append("g")
@@ -107,7 +107,55 @@ function crearUsoSugarGnome() {
             return d.value;
         });
 
-    $.getJSON("/json/uso_sugar_gnome", function(data) {
+    $.getJSON("/json/uso_sugar_gnome_duracion", function(data) {
+
+        var arcs = chart.selectAll(".slice")
+            .data(pie(data))
+            .enter()
+            .append("g")
+            .attr("class", function(d) {
+                if (d.data.session == 'Sugar') {
+                    return "slice sugar";
+                } else {
+                    return "slice gnome";
+                }
+            });
+
+        arcs.append("path")
+            .attr("d", arc)
+            .attr("class", "sugar");
+
+        arcs.append("text")
+            .attr("class", "sliceText")
+            .attr("transform", function(d) {
+                return "translate(" + arc.centroid(d) + ")";
+            })
+            .attr("dy", ".35em")
+            .text(function(d) {
+                return d.data.session;
+            });
+
+    });
+
+}
+
+function crearUsoSugarGnomeConteo() {
+    var chart = d3.select(".chart.sugar-gnome-conteo")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform", "translate(" + (width + margin.left + margin.right) / 2 + "," + (height + margin.top + margin.bottom) / 2 + ")");
+
+    var arc = d3.svg.arc()
+        .innerRadius(0)
+        .outerRadius(radius);
+
+    var pie = d3.layout.pie()
+        .value(function(d) {
+            return d.value;
+        });
+
+    $.getJSON("/json/uso_sugar_gnome_conteo", function(data) {
 
         var arcs = chart.selectAll(".slice")
             .data(pie(data))
@@ -258,6 +306,7 @@ function crearRankingApps() {
 }
 
 crearTiempoDeUso();
-crearUsoSugarGnome();
+crearUsoSugarGnomeDuracion();
+crearUsoSugarGnomeConteo();
 crearRankingActs();
 crearRankingApps();
