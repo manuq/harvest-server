@@ -190,9 +190,19 @@ function crearUsoSugarGnomeConteo() {
             .attr("transform", function(d) {
                 return "translate(" + arc.centroid(d) + ")";
             })
-            .attr("dy", ".35em")
+            .attr("dy", "2.5em")
             .text(function(d) {
                 return d.data.session;
+            });
+
+        arcs.append("text")
+            .attr("class", "sliceText big")
+            .attr("transform", function(d) {
+                return "translate(" + arc.centroid(d) + ")";
+            })
+            .attr("dy", ".35em")
+            .text(function(d) {
+                return d.data.percentage + '%';
             });
 
     });

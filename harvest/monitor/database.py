@@ -102,6 +102,7 @@ class Database():
             result.append({
                 'value': value,
                 'session': get_session(row[1]),
+                'percentage': int(row[2]),
             })
 
         return result
