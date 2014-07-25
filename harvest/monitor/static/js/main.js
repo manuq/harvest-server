@@ -10,6 +10,18 @@ var radius = 180;
 
 var formato_hora = d3.time.format("%H:%M hs");
 
+function crearEquiposMuestra() {
+    $.getJSON("/json/equipos_muestra", function(data) {
+        var html = "";
+        for (var i = 0; i < data.length; i++) {
+            html += "<tr><td>" + data[i]['model'] + "</td><td>";
+            html += data[i]['build'] + "</td><td>";
+            html += data[i]['count'] + "</td></tr>";
+        }
+        $('#equipos-muestra tbody').html(html);
+    });
+}
+
 function crearTiempoDeUso() {
     var barY = d3.scale.linear()
         .range([height, 0]);
@@ -305,6 +317,7 @@ function crearRankingApps() {
     });
 }
 
+crearEquiposMuestra();
 crearTiempoDeUso();
 crearUsoSugarGnomeDuracion();
 crearUsoSugarGnomeConteo();

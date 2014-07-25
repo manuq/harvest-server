@@ -40,6 +40,17 @@ class Database():
         else:
             return None
 
+    def _json_equipos_muestra(self, cursor):
+        result = []
+        for row in cursor.fetchall():
+            result.append({
+                'model': row[0],
+                'build': row[1],
+                'count': row[2],
+            })
+
+        return result
+
     def _json_tiempo_de_uso(self, cursor):
         def total_seconds(time):
             if time is None:

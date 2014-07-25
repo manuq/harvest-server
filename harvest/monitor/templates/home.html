@@ -6,6 +6,18 @@
 
 {% block contenido %}
 <div class="container">
+<h2>Equipos de la muestra</h2>
+<table id="equipos-muestra" class="table">
+<thead>
+<tr><th>Modelo</th><th>Imagen</th><th>Cantidad</th></tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<p><a class="btn btn-default" href="/csv/equipos_muestra.csv" download="equipos_muestra.csv">Exportar</a></p>
+</div>
+
+<div class="container">
 <h2>Uso de los equipos, promedios por semana</h2>
 <p>Cuánto tiempo se usa cada equipo, en promedio, por semana.</p>
 <svg class="chart uso-semanal"></svg>
