@@ -5,7 +5,8 @@ from ConfigParser import ConfigParser
 import tornado.ioloop
 import tornado.web
 import tornado.httpserver
-from harvest.monitor.handler import HomeHandler, EvaluacionMonitoreoHandler
+from harvest.monitor.handler import HomeHandler, LoginHandler
+from harvest.monitor.handler import EvaluacionMonitoreoHandler
 from harvest.monitor.handler import JsonHandler, CSVHandler
 from harvest.monitor.database import Database
 
@@ -29,6 +30,7 @@ class Application(tornado.web.Application):
             (r"/json/([^/]+)", JsonHandler, {'database': database}),
             (r"/csv/([^/]+).csv", CSVHandler, {'database': database}),
             (r"/", HomeHandler),
+            (r"/ingresar", LoginHandler, {'password': config.get('server', 'user_password')}),
             (r"/evaluacion_y_monitoreo", EvaluacionMonitoreoHandler),
 
         ]
@@ -37,6 +39,9 @@ class Application(tornado.web.Application):
             'debug': True,
             'autoreload': True,
             'template_path': TEMPLATE_PATH,
+            'cookie_secret': config.get('server', 'cookie_secret'),
+            'xsrf_cookies': True,
+            'login_url': "/ingresar",
         }
 
         tornado.web.Application.__init__(self, handlers, **settings)

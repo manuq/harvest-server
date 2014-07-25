@@ -1,17 +1,39 @@
 import json
-from tornado.web import RequestHandler, HTTPError
+from tornado.web import RequestHandler, HTTPError, authenticated
 
 
-class HomeHandler(RequestHandler):
+class AuthHandler(RequestHandler):
+    def get_current_user(self):
+        return self.get_secure_cookie("password")
+
+
+class LoginHandler(AuthHandler):
+    def initialize(self, password):
+        self._password = password
+
+    def get(self):
+        self.render('login.html')
+
+    def post(self):
+        if self.get_argument("password") != self._password:
+            self.redirect("/ingresar")
+            return
+
+        self.set_secure_cookie("password", self.get_argument("password"))
+        self.redirect("/")
+
+class HomeHandler(AuthHandler):
+    @authenticated
     def get(self):
         self.render('home.html')
 
-class EvaluacionMonitoreoHandler(RequestHandler):
+class EvaluacionMonitoreoHandler(AuthHandler):
+    @authenticated
     def get(self):
         self.render('evaluacion_y_monitoreo.html')
 
 
-class DataHandler(RequestHandler):
+class DataHandler(AuthHandler):
     def __init__(self, output, application, request, **kwargs):
         self._output = output
         super(DataHandler, self).__init__(application, request, **kwargs)
@@ -20,6 +42,9 @@ class DataHandler(RequestHandler):
         self._database = database
 
     def get(self, query):
+        if not self.current_user:
+            raise HTTPError(401)
+
         if self._database.is_not_valid(query):
             raise HTTPError(404)
 
