@@ -1,0 +1,9 @@
+<html>
+<body>
+<form action="/ingresar" method="post">
+{% module xsrf_form_html() %}
+Contraseña: <input type="text" name="password">
+<input type="submit" value="Sign in">
+</form>
+</body>
+</html>
