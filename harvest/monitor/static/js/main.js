@@ -182,6 +182,10 @@ function crearUsoSugarGnomeConteo() {
 
     $.getJSON("/json/uso_sugar_gnome_conteo", function(data) {
 
+        var total = data[0].value + data[1].value;
+        data[0].percentage = Math.round(data[0].value / total * 100);
+        data[1].percentage = 100 - data[0].percentage;
+
         var arcs = chart.selectAll(".slice")
             .data(pie(data))
             .enter()
