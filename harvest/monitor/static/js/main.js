@@ -10,6 +10,18 @@ var radius = 180;
 
 var formato_hora = d3.time.format("%H:%M hs");
 
+function crearEquiposMuestra() {
+    $.getJSON("/json/equipos_muestra", function(data) {
+        var html = "";
+        for (var i = 0; i < data.length; i++) {
+            html += "<tr><td>" + data[i]['model'] + "</td><td>";
+            html += data[i]['build'] + "</td><td>";
+            html += data[i]['count'] + "</td></tr>";
+        }
+        $('#equipos-muestra tbody').html(html);
+    });
+}
+
 function crearTiempoDeUso() {
     var barY = d3.scale.linear()
         .range([height, 0]);
@@ -91,8 +103,8 @@ function crearTiempoDeUso() {
     });
 }
 
-function crearUsoSugarGnome() {
-    var chart = d3.select(".chart.sugar-gnome")
+function crearUsoSugarGnomeDuracion() {
+    var chart = d3.select(".chart.sugar-gnome-duracion")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
         .append("g")
@@ -107,7 +119,7 @@ function crearUsoSugarGnome() {
             return d.value;
         });
 
-    $.getJSON("/json/uso_sugar_gnome", function(data) {
+    $.getJSON("/json/uso_sugar_gnome_duracion", function(data) {
 
         var arcs = chart.selectAll(".slice")
             .data(pie(data))
@@ -133,6 +145,64 @@ function crearUsoSugarGnome() {
             .attr("dy", ".35em")
             .text(function(d) {
                 return d.data.session;
+            });
+
+    });
+
+}
+
+function crearUsoSugarGnomeConteo() {
+    var chart = d3.select(".chart.sugar-gnome-conteo")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform", "translate(" + (width + margin.left + margin.right) / 2 + "," + (height + margin.top + margin.bottom) / 2 + ")");
+
+    var arc = d3.svg.arc()
+        .innerRadius(0)
+        .outerRadius(radius);
+
+    var pie = d3.layout.pie()
+        .value(function(d) {
+            return d.value;
+        });
+
+    $.getJSON("/json/uso_sugar_gnome_conteo", function(data) {
+
+        var arcs = chart.selectAll(".slice")
+            .data(pie(data))
+            .enter()
+            .append("g")
+            .attr("class", function(d) {
+                if (d.data.session == 'Sugar') {
+                    return "slice sugar";
+                } else {
+                    return "slice gnome";
+                }
+            });
+
+        arcs.append("path")
+            .attr("d", arc)
+            .attr("class", "sugar");
+
+        arcs.append("text")
+            .attr("class", "sliceText")
+            .attr("transform", function(d) {
+                return "translate(" + arc.centroid(d) + ")";
+            })
+            .attr("dy", "2.5em")
+            .text(function(d) {
+                return d.data.session;
+            });
+
+        arcs.append("text")
+            .attr("class", "sliceText big")
+            .attr("transform", function(d) {
+                return "translate(" + arc.centroid(d) + ")";
+            })
+            .attr("dy", ".35em")
+            .text(function(d) {
+                return d.data.percentage + '%';
             });
 
     });
@@ -257,7 +327,9 @@ function crearRankingApps() {
     });
 }
 
+crearEquiposMuestra();
 crearTiempoDeUso();
-crearUsoSugarGnome();
+crearUsoSugarGnomeDuracion();
+crearUsoSugarGnomeConteo();
 crearRankingActs();
 crearRankingApps();

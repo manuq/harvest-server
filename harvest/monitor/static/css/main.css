@@ -3,9 +3,19 @@ body {
 }
 
 .chart {
-  background: #dfdfdf;
+  background: #efefef;
   width: 960px;
   height: 500px;
+}
+
+span.sugar {
+  color: greenyellow;
+  font-weight: bold;
+}
+
+span.gnome {
+  color: steelblue;
+  font-weight: bold;
 }
 
 .bar, .slice {
@@ -31,6 +41,11 @@ body {
   text-anchor: middle;
 }
 
+.sliceText.big {
+  fill: #333;
+  font: 42px sans-serif;
+  text-anchor: middle;
+}
 .axis text {
   font: 10px sans-serif;
 }

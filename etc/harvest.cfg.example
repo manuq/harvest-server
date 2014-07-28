@@ -11,3 +11,5 @@ certfile: /opt/harvest/etc/harvest.crt
 keyfile: /opt/harvest/etc/harvest.key
 api_key: harvest
 no_keep_alive: False
+cookie_secret: 123456
+user_password: 123
