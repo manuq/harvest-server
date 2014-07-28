@@ -107,14 +107,11 @@ class Database():
         return result
 
     def _json_ranking_actividades(self, cursor):
-        def name_from_bundle(bundle_id):
-            return bundle_id.split('.')[-1]
-
         result = []
         for row in cursor.fetchall():
             result.append({
                 'spent_time': int(row[0]),
-                'bundle_id': name_from_bundle(row[1]),
+                'act_name': row[1],
             })
 
         return result

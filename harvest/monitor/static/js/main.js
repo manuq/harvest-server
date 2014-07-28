@@ -241,7 +241,7 @@ function crearRankingActs() {
 
     $.getJSON("/json/ranking_actividades", function(data) {
         var domain = data.map(function(d) {
-            return d.bundle_id;
+            return d.act_name;
         })
 
         var missing = 10 - domain.length;
@@ -258,7 +258,7 @@ function crearRankingActs() {
             .data(data)
             .enter().append("g")
             .attr("transform", function(d, i) {
-                return "translate(" + barX(d.bundle_id) + ", 0)";
+                return "translate(" + barX(d.act_name) + ", 0)";
             });
 
         bar.append("rect")
@@ -279,7 +279,7 @@ function crearRankingActs() {
             })
             .attr("dy", "-0.5em")
             .text(function(d) {
-                return d.bundle_id
+                return d.act_name
             });
 
     });
