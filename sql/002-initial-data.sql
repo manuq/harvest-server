@@ -21,6 +21,8 @@ INSERT INTO gnome_alias VALUES ('plugin-container', 'Plugin de Firefox') ON DUPL
 
 INSERT INTO activities VALUES ('uy.ceibal.GetBooksCeibalActivity', 'Biblioteca Ceibal') ON DUPLICATE KEY UPDATE bundle_id = VALUES(bundle_id);
 INSERT INTO activities VALUES ('org.laptop.WebActivity', 'Navegar') ON DUPLICATE KEY UPDATE bundle_id = VALUES(bundle_id);
+INSERT INTO activities VALUES ('org.laptop.RecordActivity', 'Grabar') ON DUPLICATE KEY UPDATE bundle_id = VALUES(bundle_id);
+INSERT INTO activities VALUES ('org.laptop.JournalActivity', 'Diario') ON DUPLICATE KEY UPDATE bundle_id = VALUES(bundle_id);
 INSERT INTO activities VALUES ('org.laptop.Calculate', 'Calculadora') ON DUPLICATE KEY UPDATE bundle_id = VALUES(bundle_id);
 INSERT INTO activities VALUES ('com.ywwg.CartoonBuilderActivity', 'Creador de Historietas') ON DUPLICATE KEY UPDATE bundle_id = VALUES(bundle_id);
 INSERT INTO activities VALUES ('org.laptop.CeibalNotifica', 'Ceibal Notifica') ON DUPLICATE KEY UPDATE bundle_id = VALUES(bundle_id);
@@ -49,3 +51,5 @@ INSERT INTO activities VALUES ('org.laptop.TamTamEdit', 'TamTamEdit') ON DUPLICA
 INSERT INTO activities VALUES ('org.laptop.TamTamMini', 'TamTamMini') ON DUPLICATE KEY UPDATE bundle_id = VALUES(bundle_id);
 INSERT INTO activities VALUES ('org.laptop.Terminal', 'Terminal') ON DUPLICATE KEY UPDATE bundle_id = VALUES(bundle_id);
 INSERT INTO activities VALUES ('vu.lux.olpc.Speak', 'Hablar') ON DUPLICATE KEY UPDATE bundle_id = VALUES(bundle_id);
+INSERT INTO activities VALUES ('org.tuxpaint', 'Tux Paint') ON DUPLICATE KEY UPDATE bundle_id = VALUES(bundle_id);
+INSERT INTO activities VALUES ('uy.edu.fing.geirea.conozcouruguay', 'Conozco Uruguay') ON DUPLICATE KEY UPDATE bundle_id = VALUES(bundle_id);
