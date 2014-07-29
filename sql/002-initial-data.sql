@@ -52,3 +52,8 @@ INSERT INTO activities VALUES ('org.laptop.Terminal', 'Terminal') ON DUPLICATE K
 INSERT INTO activities VALUES ('vu.lux.olpc.Speak', 'Hablar') ON DUPLICATE KEY UPDATE activity_name = 'Hablar';
 INSERT INTO activities VALUES ('org.tuxpaint', 'Tux Paint') ON DUPLICATE KEY UPDATE activity_name = 'Tux Paint';
 INSERT INTO activities VALUES ('uy.edu.fing.geirea.conozcouruguay', 'Conozco Uruguay') ON DUPLICATE KEY UPDATE activity_name = 'Conozco Uruguay';
+INSERT INTO activities VALUES ('edu.mit.media.ScratchActivity', 'Scratch') ON DUPLICATE KEY UPDATE activity_name = 'Scratch';
+INSERT INTO activities VALUES ('com.trojanchicken.cazaproblemas2', 'Cazaproblemas 2') ON DUPLICATE KEY UPDATE activity_name = 'Cazaproblemas 2';
+INSERT INTO activities VALUES ('com.trojanchicken.cazaproblemas3', 'Cazaproblemas 3') ON DUPLICATE KEY UPDATE activity_name = 'Cazaproblemas 3';
+INSERT INTO activities VALUES ('com.ywwg.CartoonBuilderActivity', 'Creador de historietas') ON DUPLICATE KEY UPDATE activity_name = 'Creador de historietas';
+INSERT INTO activities VALUES (' org.laptop.TurtleArtActivity', 'TortugArte') ON DUPLICATE KEY UPDATE activity_name = 'TortugArte'; 
