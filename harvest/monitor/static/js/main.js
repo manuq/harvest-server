@@ -39,23 +39,6 @@ function crearEquiposMuestra() {
         .innerRadius(function(d) { return Math.sqrt(d.y); })
         .outerRadius(function(d) { return Math.sqrt(d.y + d.dy); });
 
-    // Stash the old values for transition.
-    function stash(d) {
-        d.x0 = d.x;
-        d.dx0 = d.dx;
-    }
-
-    // Interpolate the arcs in data space.
-    function arcTween(a) {
-        var i = d3.interpolate({x: a.x0, dx: a.dx0}, a);
-        return function(t) {
-            var b = i(t);
-            a.x0 = b.x;
-            a.dx0 = b.dx;
-            return arc(b);
-        };
-    }
-
     $.getJSON("/json/equipos_muestra", function(data) {
         var value = function(d) { return d.size; };
         var path = chart.datum(data).selectAll("path")
@@ -65,8 +48,7 @@ function crearEquiposMuestra() {
             .attr("d", arc)
             .style("stroke", "#efefef")
             .style("fill", function(d) { return laptopColor((d.children ? d : d.parent).name); })
-            .style("fill-rule", "evenodd")
-            .each(stash);
+            .style("fill-rule", "evenodd");
     });
 }
 
