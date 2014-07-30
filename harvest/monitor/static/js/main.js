@@ -20,6 +20,31 @@ var laptopColor = function () {
     return d3.scale.ordinal().range(colors);
 }();
 
+function wrap(text, width) {
+    text.each(function() {
+        var text = d3.select(this),
+        //words = text.text().split('.').reverse(),
+        words = text.text().split(/\s+/).reverse(),
+        word,
+        line = [],
+        lineNumber = 0,
+        lineHeight = 1.1, // ems
+        y = text.attr("y"),
+        dy = parseFloat(text.attr("dy")),
+        tspan = text.text(null).append("tspan").attr("x", 0).attr("y", y).attr("dy", dy + "em");
+        while (word = words.pop()) {
+            line.push(word);
+            tspan.text(line.join(" "));
+            if (tspan.node().getComputedTextLength() > width) {
+                line.pop();
+                tspan.text(line.join(" "));
+                line = [word];
+                tspan = text.append("tspan").attr("x", 0).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
+            }
+        }
+    });
+}
+
 function crearEquiposMuestra() {
 
     var chart = d3.select(".chart.equipos-muestra")
@@ -292,6 +317,17 @@ function crearRankingActs() {
     var barX = d3.scale.ordinal()
         .rangeRoundBands([0, width], 0.1);
 
+    var xAxis = d3.svg.axis()
+        .scale(barX)
+        .orient("bottom");
+
+    var yAxis = d3.svg.axis()
+        .scale(barY)
+        .orient("left")
+        .tickFormat(function(d) {
+            return formato_hora(new Date(0, 0, 0, 0, 0, d))
+        });
+
     var chart = d3.select(".chart.ranking-acts")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
@@ -313,6 +349,17 @@ function crearRankingActs() {
             return d.spent_time;
         })]);
 
+        chart.append("g")
+            .attr("class", "x axis")
+            .attr("transform", "translate(0," + height + ")")
+            .call(xAxis)
+            .selectAll(".tick text")
+            .call(wrap, barX.rangeBand());
+
+        chart.append("g")
+            .attr("class", "y axis")
+            .call(yAxis);
+
         var bar = chart.selectAll(".bar")
             .data(data)
             .enter().append("g")
@@ -330,17 +377,6 @@ function crearRankingActs() {
                 return height - barY(d.spent_time)
             });
 
-        bar.append("text")
-            .attr("class", "barText")
-            .attr("x", barX.rangeBand() / 2)
-            .attr("y", function(d) {
-                return barY(d.spent_time) - 3
-            })
-            .attr("dy", "-0.5em")
-            .text(function(d) {
-                return d.act_name
-            });
-
     });
 }
 
@@ -350,6 +386,17 @@ function crearRankingApps() {
 
     var barX = d3.scale.ordinal()
         .rangeRoundBands([0, width], 0.1);
+
+    var xAxis = d3.svg.axis()
+        .scale(barX)
+        .orient("bottom");
+
+    var yAxis = d3.svg.axis()
+        .scale(barY)
+        .orient("left")
+        .tickFormat(function(d) {
+            return formato_hora(new Date(0, 0, 0, 0, 0, d))
+        });
 
     var chart = d3.select(".chart.ranking-apps")
         .attr("width", width + margin.left + margin.right)
@@ -372,6 +419,17 @@ function crearRankingApps() {
             return d.spent_time;
         })]);
 
+        chart.append("g")
+            .attr("class", "x axis")
+            .attr("transform", "translate(0," + height + ")")
+            .call(xAxis)
+            .selectAll(".tick text")
+            .call(wrap, barX.rangeBand());
+
+        chart.append("g")
+            .attr("class", "y axis")
+            .call(yAxis);
+
         var bar = chart.selectAll(".bar")
             .data(data)
             .enter().append("g")
@@ -387,17 +445,6 @@ function crearRankingApps() {
             .attr("width", barX.rangeBand())
             .attr("height", function(d) {
                 return height - barY(d.spent_time)
-            });
-
-        bar.append("text")
-            .attr("class", "barText")
-            .attr("x", barX.rangeBand() / 2)
-            .attr("y", function(d) {
-                return barY(d.spent_time) - 3
-            })
-            .attr("dy", "-0.5em")
-            .text(function(d) {
-                return d.app_name
             });
 
     });
