@@ -41,13 +41,25 @@ class Database():
             return None
 
     def _json_equipos_muestra(self, cursor):
-        result = []
+        models = {}
         for row in cursor.fetchall():
-            result.append({
-                'model': row[0],
-                'build': row[1],
-                'count': row[2],
-            })
+            model = row[0]
+            build = row[1]
+            count = row[2]
+            if model not in models.keys():
+                models[model] = {}
+            models[model][build] = count
+
+        def build_children(builds):
+            children = []
+            for build, count in builds.items():
+                children.append({"name": build, "size": count})
+            return children
+
+        children = []
+        for model, builds in models.items():
+            children.append({"name": model, "children": build_children(builds)})
+        result = {"name": "all", "children": children}
 
         return result
 

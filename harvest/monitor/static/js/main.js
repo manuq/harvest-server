@@ -48,7 +48,7 @@ function crearEquiposMuestra() {
         };
     }
 
-    function crear(data) {
+    $.getJSON("/json/equipos_muestra", function(data) {
         var value = function(d) { return d.size; };
         var path = chart.datum(data).selectAll("path")
             .data(partition.value(value).nodes)
@@ -59,39 +59,6 @@ function crearEquiposMuestra() {
             .style("fill", function(d) { return color((d.children ? d : d.parent).name); })
             .style("fill-rule", "evenodd")
             .each(stash);
-    }
-
-    var data = {
-        "name": "all",
-        "children": [
-            {"name": "XO-1",
-             "children": [
-                 {"name": "41-Version-a-(Dextrose-3-Uy)", "size": 22},
-             ]
-            },
-            {"name": "XO-1.5",
-             "children": [
-                 {"name": "18-Version-a-(Dextrose-3-Uy)", "size": 2},
-             ]
-            },
-            {"name": "XO-1.5HS",
-             "children": [
-                 {"name": "113-Version-a-(Dextrose-3-Uy)", "size": 2},
-                 {"name": "67-Version-a-(Dextrose-3-Uy)", "size": 1},
-             ]
-            },
-        ]
-    }
-    crear(data);
-
-    $.getJSON("/json/equipos_muestra", function(data) {
-        var html = "";
-        for (var i = 0; i < data.length; i++) {
-            html += "<tr><td>" + data[i]['model'] + "</td><td>";
-            html += data[i]['build'] + "</td><td>";
-            html += data[i]['count'] + "</td></tr>";
-        }
-        $('#equipos-muestra tbody').html(html);
     });
 }
 
