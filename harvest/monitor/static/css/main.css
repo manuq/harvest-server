@@ -35,6 +35,11 @@ span.gnome {
   text-anchor: middle;
 }
 
+.donaText {
+  font: 13px sans-serif;
+  text-anchor: middle;
+}
+
 .sliceText {
   fill: #000;
   font: 13px sans-serif;

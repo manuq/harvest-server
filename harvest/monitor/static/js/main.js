@@ -50,11 +50,15 @@ function crearEquiposMuestra() {
             .attr("d", arc)
             .style("stroke", "#efefef")
             .style("fill", function(d) { return laptopColor((d.children ? d : d.parent).name); })
-            .style("fill-rule", "evenodd");
+            .style("fill-rule", "evenodd")
+            .on("mouseover", function(d) {
+            })
+            .on("mouseout", function(d){
+            });
 
         path.data(partition.value(value).nodes)
             .enter().append("text")
-            //.attr("class", "barText")
+            .attr("class", "donaText")
             .attr("transform", function(d) {
                 var c = arc.centroid(d);
                 x = c[0],
@@ -63,7 +67,17 @@ function crearEquiposMuestra() {
                 return "translate(" + (x/h * labelRadius) +  ',' +
                     (y/h * labelRadius) +  ")";
             })
-            .text(function(d) { return d.name });
+            .attr("dy", ".5em")
+            .attr("visibility", "visible")
+            .text(function(d) {
+                if (!d.parent) {
+                    return "";
+                }
+                if (d.parent.name == 'all') {
+                    return d.name;
+                }
+                return "";
+            });
     });
 }
 
