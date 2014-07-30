@@ -10,8 +10,17 @@ var radius = 180;
 
 var formato_hora = d3.time.format("%H:%M hs");
 
+var colors = [
+    "#EA3556", "#B182E6",
+    "#EDDE45", "#ED146F",
+    "#9BF0E9", "#8DE582",
+];
+
+var laptopColor = function () {
+    return d3.scale.ordinal().range(colors);
+}();
+
 function crearEquiposMuestra() {
-    var color = d3.scale.category20c();
 
     var chart = d3.select(".chart.equipos-muestra")
         .attr("width", width + margin.left + margin.right)
@@ -29,7 +38,6 @@ function crearEquiposMuestra() {
         .endAngle(function(d) { return d.x + d.dx; })
         .innerRadius(function(d) { return Math.sqrt(d.y); })
         .outerRadius(function(d) { return Math.sqrt(d.y + d.dy); });
-
 
     // Stash the old values for transition.
     function stash(d) {
@@ -55,8 +63,8 @@ function crearEquiposMuestra() {
             .enter().append("path")
             .attr("display", function(d) { return d.depth ? null : "none"; }) // hide inner ring
             .attr("d", arc)
-            .style("stroke", "#fff")
-            .style("fill", function(d) { return color((d.children ? d : d.parent).name); })
+            .style("stroke", "#efefef")
+            .style("fill", function(d) { return laptopColor((d.children ? d : d.parent).name); })
             .style("fill-rule", "evenodd")
             .each(stash);
     });
