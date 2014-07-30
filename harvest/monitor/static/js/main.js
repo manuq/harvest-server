@@ -11,6 +11,79 @@ var radius = 180;
 var formato_hora = d3.time.format("%H:%M hs");
 
 function crearEquiposMuestra() {
+    var color = d3.scale.category20c();
+
+    var chart = d3.select(".chart.equipos-muestra")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform", "translate(" + (width + margin.left + margin.right) / 2 + "," + (height + margin.top + margin.bottom) / 2 + ")");
+
+    var partition = d3.layout.partition()
+        .sort(null)
+        .size([2 * Math.PI, radius * radius])
+        .value(function(d) { return 1; });
+
+    var arc = d3.svg.arc()
+        .startAngle(function(d) { return d.x; })
+        .endAngle(function(d) { return d.x + d.dx; })
+        .innerRadius(function(d) { return Math.sqrt(d.y); })
+        .outerRadius(function(d) { return Math.sqrt(d.y + d.dy); });
+
+
+    // Stash the old values for transition.
+    function stash(d) {
+        d.x0 = d.x;
+        d.dx0 = d.dx;
+    }
+
+    // Interpolate the arcs in data space.
+    function arcTween(a) {
+        var i = d3.interpolate({x: a.x0, dx: a.dx0}, a);
+        return function(t) {
+            var b = i(t);
+            a.x0 = b.x;
+            a.dx0 = b.dx;
+            return arc(b);
+        };
+    }
+
+    function crear(data) {
+        var value = function(d) { return d.size; };
+        var path = chart.datum(data).selectAll("path")
+            .data(partition.value(value).nodes)
+            .enter().append("path")
+            .attr("display", function(d) { return d.depth ? null : "none"; }) // hide inner ring
+            .attr("d", arc)
+            .style("stroke", "#fff")
+            .style("fill", function(d) { return color((d.children ? d : d.parent).name); })
+            .style("fill-rule", "evenodd")
+            .each(stash);
+    }
+
+    var data = {
+        "name": "all",
+        "children": [
+            {"name": "XO-1",
+             "children": [
+                 {"name": "41-Version-a-(Dextrose-3-Uy)", "size": 22},
+             ]
+            },
+            {"name": "XO-1.5",
+             "children": [
+                 {"name": "18-Version-a-(Dextrose-3-Uy)", "size": 2},
+             ]
+            },
+            {"name": "XO-1.5HS",
+             "children": [
+                 {"name": "113-Version-a-(Dextrose-3-Uy)", "size": 2},
+                 {"name": "67-Version-a-(Dextrose-3-Uy)", "size": 1},
+             ]
+            },
+        ]
+    }
+    crear(data);
+
     $.getJSON("/json/equipos_muestra", function(data) {
         var html = "";
         for (var i = 0; i < data.length; i++) {
