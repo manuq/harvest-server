@@ -46,9 +46,9 @@ function crearEquiposMuestra() {
         var path = chart.datum(data).selectAll("path");
         path.data(partition.value(value).nodes)
             .enter().append("path")
+            .attr("class", "donaPath")
             .attr("display", function(d) { return d.depth ? null : "none"; }) // hide inner ring
             .attr("d", arc)
-            .style("stroke", "#efefef")
             .style("fill", function(d) { return laptopColor((d.children ? d : d.parent).name); })
             .style("fill-rule", "evenodd")
             .on("mouseover", function(d) {

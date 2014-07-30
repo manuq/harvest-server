@@ -40,6 +40,10 @@ span.gnome {
   text-anchor: middle;
 }
 
+.donaPath {
+    stroke: #efefef;
+}
+
 .sliceText {
   fill: #000;
   font: 13px sans-serif;
