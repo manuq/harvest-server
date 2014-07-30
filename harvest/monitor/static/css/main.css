@@ -64,3 +64,7 @@ span.gnome {
   stroke: #000;
   shape-rendering: crispEdges;
 }
+
+.x.axis path {
+  display: none;
+}
