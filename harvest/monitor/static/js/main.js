@@ -39,16 +39,31 @@ function crearEquiposMuestra() {
         .innerRadius(function(d) { return Math.sqrt(d.y); })
         .outerRadius(function(d) { return Math.sqrt(d.y + d.dy); });
 
+    var labelRadius = radius + 30;
+
     $.getJSON("/json/equipos_muestra", function(data) {
         var value = function(d) { return d.size; };
-        var path = chart.datum(data).selectAll("path")
-            .data(partition.value(value).nodes)
+        var path = chart.datum(data).selectAll("path");
+        path.data(partition.value(value).nodes)
             .enter().append("path")
             .attr("display", function(d) { return d.depth ? null : "none"; }) // hide inner ring
             .attr("d", arc)
             .style("stroke", "#efefef")
             .style("fill", function(d) { return laptopColor((d.children ? d : d.parent).name); })
             .style("fill-rule", "evenodd");
+
+        path.data(partition.value(value).nodes)
+            .enter().append("text")
+            //.attr("class", "barText")
+            .attr("transform", function(d) {
+                var c = arc.centroid(d);
+                x = c[0],
+                y = c[1],
+                h = Math.sqrt(x*x + y*y);
+                return "translate(" + (x/h * labelRadius) +  ',' +
+                    (y/h * labelRadius) +  ")";
+            })
+            .text(function(d) { return d.name });
     });
 }
 
