@@ -310,6 +310,46 @@ function crearUsoSugarGnomeConteo() {
 
 }
 
+function obtenerGrados(callback) {
+    function gradosConNombre(data) {
+        result = {}
+        data.forEach(function (d) {
+            console.log(d);
+            switch(d) {
+            case 1:
+            case 3:
+                result[d] = d + 'ro.';
+                break;
+            case 2:
+                result[d] = d + 'do.';
+                break;
+            case 4:
+            case 5:
+            case 6:
+                result[d] = d + 'to.';
+                break;
+            case 7:
+            case 10:
+                result[d] = d + 'mo.';
+                break;
+            case 8:
+                result[d] = d + 'vo.';
+                break;
+            case 9:
+                result[d] = d + 'no.';
+                break;
+            default:
+                result[d] = d + 'to.';
+            }
+        });
+        return result;
+    }
+
+    $.getJSON("/json/grados", function(data) {
+        callback(gradosConNombre(data));
+    });
+}
+
 function crearRankingActs() {
     var barY = d3.scale.linear()
         .range([height, 0]);
@@ -333,6 +373,21 @@ function crearRankingActs() {
         .attr("height", height + margin.top + margin.bottom)
         .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    obtenerGrados(function (data) {
+        $("#grados-actividades")
+            .append($("<option></option>")
+                    .attr("value", "todos")
+                    .attr("selected", "selected")
+                    .text("Todos"));
+
+        $.each(data, function(key, value) {
+            $("#grados-actividades")
+                .append($("<option></option>")
+                        .attr("value", key)
+                        .text(value));
+        });
+    });
 
     $.getJSON("/json/ranking_actividades", function(data) {
         var domain = data.map(function(d) {
@@ -403,6 +458,21 @@ function crearRankingApps() {
         .attr("height", height + margin.top + margin.bottom)
         .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    obtenerGrados(function (data) {
+        $("#grados-aplicaciones")
+            .append($("<option></option>")
+                    .attr("value", "todos")
+                    .attr("selected", "selected")
+                    .text("Todos"));
+
+        $.each(data, function(key, value) {
+            $("#grados-aplicaciones")
+                .append($("<option></option>")
+                        .attr("value", key)
+                        .text(value));
+        });
+    });
 
     $.getJSON("/json/ranking_aplicaciones", function(data) {
         var domain = data.map(function(d) {

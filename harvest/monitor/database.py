@@ -137,3 +137,6 @@ class Database():
             })
 
         return result
+
+    def _json_grados(self, cursor):
+        return [i[0] for i in cursor.fetchall()]

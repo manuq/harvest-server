@@ -1,0 +1,1 @@
+SELECT DISTINCT grado FROM tilo ORDER BY grado;
