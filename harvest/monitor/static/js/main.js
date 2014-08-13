@@ -314,7 +314,6 @@ function obtenerGrados(callback) {
     function gradosConNombre(data) {
         result = {}
         data.forEach(function (d) {
-            console.log(d);
             switch(d) {
             case 1:
             case 3:
@@ -389,7 +388,10 @@ function crearRankingActs() {
         });
     });
 
-    $.getJSON("/json/ranking_actividades", function(data) {
+    function graficarJson(url) {
+    $.getJSON(url, function(data) {
+        chart.selectAll("*").remove();
+
         var domain = data.map(function(d) {
             return d.act_name;
         })
@@ -433,6 +435,18 @@ function crearRankingActs() {
             });
 
     });
+    }
+    graficarJson("/json/ranking_actividades");
+
+    $('#grados-actividades').change(function () {
+        if ($(this).val() == 'todos') {
+            graficarJson("/json/ranking_actividades");
+        } else {
+            // FIXME
+            graficarJson("/json/ranking_aplicaciones");
+        }
+    });
+
 }
 
 function crearRankingApps() {
