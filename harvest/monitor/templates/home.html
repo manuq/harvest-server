@@ -33,7 +33,14 @@
 <div class="container">
 <h2>Ranking de actividades <span class="sugar">Sugar</span></h2>
 <p>Las diez actividades Sugar más usadas, según promedio de horas semanales.</p>
-<p>Grados: <select id="grados-actividades"></select></p>
+<form class="form-horizontal">
+<div class="form-group">
+<label class="control-label col-sm-2" for="grados-actividades">Grados: </label>
+<div class="col-sm-2">
+<select class="form-control" id="grados-actividades"></select>
+</div>
+</div>
+</form>
 <svg class="chart ranking-acts"></svg>
 <p><a class="btn btn-default" href="/csv/ranking_actividades.csv" download="ranking_actividades.csv">Exportar</a></p>
 </div>
@@ -41,7 +48,14 @@
 <div class="container">
 <h2>Ranking de aplicaciones <span class="gnome">GNOME</span></h2>
 <p>Las diez aplicaciones GNOME más usadas, según promedio de horas semanales.</p>
-<p>Grados: <select id="grados-aplicaciones"></select></p>
+<form class="form-horizontal">
+<div class="form-group">
+<label class="control-label col-sm-2" for="grados-aplicaciones">Grados: </label>
+<div class="col-sm-2">
+<select class="form-control" id="grados-aplicaciones"></select>
+</div>
+</div>
+</form>
 <svg class="chart ranking-apps"></svg>
 <p><a class="btn btn-default" href="/csv/ranking_aplicaciones.csv" download="ranking_aplicaciones.csv">Exportar</a></p>
 </div>
