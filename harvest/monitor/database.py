@@ -3,6 +3,7 @@ import json
 import csv
 import StringIO
 import queries
+from tornado.template import Template
 
 
 class Database():
@@ -18,10 +19,16 @@ class Database():
     def is_not_valid(self, query):
         return query not in self._queries.keys()
 
-    def get(self, query, output='json'):
+    def get(self, query, arguments, output='json'):
+        query_content = None
+        if arguments:
+            query_content = Template(self._queries[query]).generate(**arguments)
+        else:
+            query_content = self._queries[query]
+
         self._connection.ping(True)
         cursor = self._connection.cursor()
-        cursor.execute(self._queries[query])
+        cursor.execute(query_content)
 
         if output == 'json':
             method_name = '_json_' + query
@@ -127,6 +134,9 @@ class Database():
             })
 
         return result
+
+    def _json_ranking_actividades_grado(self, cursor):
+        return self._json_ranking_actividades(cursor)
 
     def _json_ranking_aplicaciones(self, cursor):
         result = []

@@ -442,8 +442,7 @@ function crearRankingActs() {
         if ($(this).val() == 'todos') {
             graficarJson("/json/ranking_actividades");
         } else {
-            // FIXME
-            graficarJson("/json/ranking_aplicaciones");
+            graficarJson("/json/ranking_actividades_grado?grado=" + $(this).val());
         }
     });
 

@@ -42,13 +42,20 @@ class DataHandler(AuthHandler):
         self._database = database
 
     def get(self, query):
+        argument_names = ['grado']
+        arguments = {}
+        for name in argument_names:
+            value = self.get_argument(name, None)
+            if value is not None:
+                arguments[name] = value
+
         if not self.current_user:
             raise HTTPError(401)
 
         if self._database.is_not_valid(query):
             raise HTTPError(404)
 
-        content = self._database.get(query, output=self._output)
+        content = self._database.get(query, arguments, output=self._output)
         if content is None:
             raise HTTPError(404)
 
