@@ -143,5 +143,8 @@ class Database(object):
 
         return result
 
+    def _json_ranking_aplicaciones_grado(self, cursor):
+        return self._json_ranking_aplicaciones(cursor)
+
     def _json_grados(self, cursor):
         return [i[0] for i in cursor.fetchall()]

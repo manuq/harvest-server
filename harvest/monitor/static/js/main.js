@@ -67,6 +67,8 @@ function crearEquiposMuestra() {
     var labelRadius = radius + 30;
 
     $.getJSON("/json/equipos_muestra", function(data) {
+        chart.selectAll("*").remove();
+
         var value = function(d) { return d.size; };
         var path = chart.datum(data).selectAll("path");
         path.data(partition.value(value).nodes)
@@ -131,6 +133,8 @@ function crearTiempoDeUso() {
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     $.getJSON("/json/tiempo_de_uso", function(data) {
+        chart.selectAll("*").remove();
+
         barX.domain(data.map(function(d) {
             return d.year + ', ' + d.week;
         }));
@@ -204,6 +208,7 @@ function crearUsoSugarGnomeDuracion() {
         });
 
     $.getJSON("/json/uso_sugar_gnome_duracion", function(data) {
+        chart.selectAll("*").remove();
 
         var total = data[0].value + data[1].value;
         data[0].percentage = Math.round(data[0].value / total * 100);
@@ -265,6 +270,7 @@ function crearUsoSugarGnomeConteo() {
         });
 
     $.getJSON("/json/uso_sugar_gnome_conteo", function(data) {
+        chart.selectAll("*").remove();
 
         var total = data[0].value + data[1].value;
         data[0].percentage = Math.round(data[0].value / total * 100);
@@ -487,7 +493,10 @@ function crearRankingApps() {
         });
     });
 
-    $.getJSON("/json/ranking_aplicaciones", function(data) {
+    function graficarJson(url) {
+    $.getJSON(url, function(data) {
+        chart.selectAll("*").remove();
+
         var domain = data.map(function(d) {
             return d.app_name;
         });
@@ -530,6 +539,16 @@ function crearRankingApps() {
                 return height - barY(d.spent_time)
             });
 
+    });
+    }
+    graficarJson("/json/ranking_aplicaciones");
+
+    $('#grados-aplicaciones').change(function () {
+        if ($(this).val() == 'todos') {
+            graficarJson("/json/ranking_aplicaciones");
+        } else {
+            graficarJson("/json/ranking_aplicaciones_grado?grado=" + $(this).val());
+        }
     });
 }
 
