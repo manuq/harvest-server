@@ -2,11 +2,10 @@ import MySQLdb
 import json
 import csv
 import StringIO
-import queries
-from tornado.template import Template
+from queries import Queries
 
 
-class Database():
+class Database(object):
     def __init__(self, host, port, username, password, database):
         self._connection = MySQLdb.connect(host=host,
                                            port=port,
@@ -14,17 +13,13 @@ class Database():
                                            passwd=password,
                                            db=database)
 
-        self._queries = queries.get_queries()
+        self._queries = Queries()
 
-    def is_not_valid(self, query):
-        return query not in self._queries.keys()
+    def is_valid(self, query):
+        return self._queries.is_valid(query)
 
     def get(self, query, arguments, output='json'):
-        query_content = None
-        if arguments:
-            query_content = Template(self._queries[query]).generate(**arguments)
-        else:
-            query_content = self._queries[query]
+        query_content = self._queries.get_content(query, arguments)
 
         self._connection.ping(True)
         cursor = self._connection.cursor()

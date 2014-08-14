@@ -52,7 +52,7 @@ class DataHandler(AuthHandler):
         if not self.current_user:
             raise HTTPError(401)
 
-        if self._database.is_not_valid(query):
+        if not self._database.is_valid(query):
             raise HTTPError(404)
 
         content = self._database.get(query, arguments, output=self._output)
