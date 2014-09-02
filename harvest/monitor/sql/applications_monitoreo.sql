@@ -1,8 +1,17 @@
 SELECT 'aplicacion','fecha','duracion_gnome','uuid','fecha_act','serial_number',
 'departamento','tipo_institucion', 'codigo_institucion', 'perfil','grado','fecha_nac','modelo_equipo'
 UNION ALL
-(select ifnull(a.app_id, s.app_name), DATE(FROM_UNIXTIME(s.timestamp)) as fecha, truncate(SUM(s.spent_time)/60, 2) as duracion_gnome, t.*
-from gnome_launches s, gnome_alias a, tilo t
-where s.app_name = a.app_name and s.serial_number = t.serial_number
-group by s.serial_number, DATE(FROM_UNIXTIME(s.timestamp)), s.app_name)
-
+(select ifnull(app_id,x.app_name), DATE(FROM_UNIXTIME(x.timestamp)),
+truncate(x.duracion,2), t.* from
+(select *, SUM(spent_time) as duracion 
+from gnome_launches l
+group by app_name, serial_number
+order by app_name) x
+join (
+	select * from tilo
+	group by serial_number) t
+on t.serial_number = x.serial_number
+left join (
+select app_name, app_id from gnome_alias    
+) y
+on x.app_name = y.app_name);
