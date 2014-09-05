@@ -5,7 +5,7 @@ UNION ALL
 truncate(x.duracion,2), t.* from
 (select *, SUM(spent_time) as duracion 
 from launches l
-group by bundle_id, serial_number
+group by bundle_id, serial_number, DATE(FROM_UNIXTIME(timestamp))
 order by bundle_id) x
 join (
 	select * from tilo
