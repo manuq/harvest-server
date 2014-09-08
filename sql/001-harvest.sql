@@ -12,6 +12,7 @@ CREATE TABLE laptops (
   collected INT(11),
   codigo_tilo INT(11),
   stored INT(11),
+  harvest_version VARCHAR(255),
   PRIMARY KEY (serial_number)
 );
 

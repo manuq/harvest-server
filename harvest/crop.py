@@ -39,7 +39,11 @@ class Crop(object):
         # dijkstra... forgive me!
         model = data[0][2]
         codigo = codigos_tilo.get(model)
-        laptops = [data[0] + [codigo]]
+
+        if (has_harvest_version(data)):
+            laptops = [data[0] + [codigo]]
+        else:
+            laptops = [data[0] + [""] + [codigo]]
 
         learners = [[data[0][0]] + data[1]]
 
@@ -65,3 +69,6 @@ class Crop(object):
             sessions.append([timestamp, spent_time, is_sugar] + learners[0])
 
         return laptops, learners, activities, launches, gnome_launches, sessions
+
+def has_harvest_version(data):
+    return len(data[0]) == 8
