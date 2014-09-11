@@ -5,6 +5,9 @@ UNION ALL
 truncate(x.duracion,2), t.* from
 (select *, SUM(spent_time) as duracion 
 from launches l
+where l.bundle_id <> ''
+and l.spent_time > 0
+and l.bundle_id not in ( select bundle_id from activities where enabled=0)
 group by bundle_id, serial_number, DATE(FROM_UNIXTIME(timestamp))
 order by bundle_id) x
 join (

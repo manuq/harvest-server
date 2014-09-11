@@ -27,6 +27,7 @@ CREATE TABLE learners (
 CREATE TABLE activities (
   bundle_id VARCHAR(255),
   activity_name VARCHAR(255),
+  enabled TINYINT(1) DEFAULT 1,
   PRIMARY KEY (bundle_id)
 );
 
@@ -69,6 +70,7 @@ CREATE TABLE sessions (
 CREATE TABLE gnome_alias (
   app_id VARCHAR(255) NOT NULL,
   app_name VARCHAR(255) NOT NULL,
+  enabled TINYINT(1) DEFAULT 1,
   PRIMARY KEY (app_name)
 );
 

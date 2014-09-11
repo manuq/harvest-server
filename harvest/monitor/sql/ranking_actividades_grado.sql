@@ -6,7 +6,8 @@ FROM (
   AND tilo.serial_number LIKE launches.serial_number
 ) launches_por_grado
 WHERE spent_time IS NOT NULL
-AND spent_time > 0 AND spent_time/60/60 < 24
+AND spent_time > 0 
+AND bundle_id not in ( select bundle_id from activities where enabled=0)
 GROUP BY bundle_id
 ORDER BY SUM(spent_time) DESC
 LIMIT 10
