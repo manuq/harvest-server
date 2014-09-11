@@ -1,9 +1,29 @@
+<!DOCTYPE html>
 <html>
+
+<head>
+<title>Monitor de Estadísticas - Plan Ceibal</title>
+<link rel="shortcut icon" href="/static/favicon.ico" type="image/vnd.microsoft.icon" />
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+<link href="/static/css/signin.css" rel="stylesheet">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.4.8/d3.min.js"></script>
+</head>
+
 <body>
-<form action="/ingresar" method="post">
+
+ <div class="container">
+<form class="form-signin" role="form" action="/ingresar" method="post">
+<h2 class="form-signin-heading">Sign in</h2>
 {% module xsrf_form_html() %}
-Contraseña: <input type="text" name="password">
-<input type="submit" value="Ingresar">
+<input type="text" name="password" class="form-control" placeholder="Password" required autofocus>
+<label class="checkbox"></label>
+<button class="btn btn-lg btn-primary btn-block" type="submit">Ingresar</button>
+
 </form>
+
+</div>
 </body>
 </html>
