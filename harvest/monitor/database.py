@@ -148,3 +148,13 @@ class Database(object):
 
     def _json_grados(self, cursor):
         return [i[0] for i in cursor.fetchall()]
+
+    def _json_database_size(self, cursor):
+        result = []
+        for row in cursor.fetchall():
+            result.append({
+                'size': int(row[0]),
+            })
+
+        return result
+

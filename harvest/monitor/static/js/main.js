@@ -45,6 +45,17 @@ function wrap(text, width) {
     });
 }
 
+function crearDatabaseSize() {
+    $.getJSON("/json/database_size", function(data) {
+       var html = "";
+        for (var i = 0; i < data.length; i++) {
+            html += "<tr><td>" + data[i]['size'] + "</td><td>";
+        }
+        $('#database-size tbody').html(html);
+    });
+
+}
+
 function crearEquiposMuestra() {
 
     var chart = d3.select(".chart.equipos-muestra")
@@ -552,6 +563,7 @@ function crearRankingApps() {
     });
 }
 
+crearDatabaseSize();
 crearEquiposMuestra();
 crearTiempoDeUso();
 crearUsoSugarGnomeDuracion();
