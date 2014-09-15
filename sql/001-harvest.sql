@@ -95,5 +95,10 @@ CREATE TABLE logs_tilo (
   PRIMARY KEY (fecha, uuid) 
 );	
 
+CREATE TABLE muestras (
+  id_muestra INT NOT NULL ,
+  codigo_institucion VARCHAR(45) NOT NULL ,
+  PRIMARY KEY (id_muestra, codigo_institucion) );
+
 CREATE USER 'harvest'@'%' IDENTIFIED BY 'harvest';
 GRANT ALL PRIVILEGES ON harvest . * TO 'harvest'@'%';
