@@ -11,7 +11,8 @@ and l.bundle_id not in ( select bundle_id from activities where enabled=0)
 group by bundle_id, serial_number, DATE(FROM_UNIXTIME(timestamp))
 order by bundle_id) x
 join (
-	select * from tilo
+	select * from tilo t 
+	where codigo_institucion in (select codigo_institucion from muestras where id_muestra = 1)
 	group by serial_number) t
 on t.serial_number = x.serial_number
 left join (
