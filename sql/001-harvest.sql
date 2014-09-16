@@ -98,6 +98,8 @@ CREATE TABLE logs_tilo (
 CREATE TABLE muestras (
   id_muestra INT NOT NULL ,
   codigo_institucion VARCHAR(45) NOT NULL ,
+  universo INT ,
+  registrados INT ,
   PRIMARY KEY (id_muestra, codigo_institucion) );
 
 CREATE USER 'harvest'@'%' IDENTIFIED BY 'harvest';
