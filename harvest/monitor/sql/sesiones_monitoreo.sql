@@ -4,6 +4,6 @@ UNION ALL
 (select DATE(FROM_UNIXTIME(s.timestamp)), truncate(s.spent_time/60, 2), t.* 
 from sessions s, tilo t 
 where t.serial_number = s.serial_number
-and codigo_institucion in (select codigo_institucion from muestras where id_muestra = 1)
+and codigo_institucion in (select codigo_institucion from muestras where id_muestra = 2)
 )
 

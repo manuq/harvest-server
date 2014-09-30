@@ -12,7 +12,7 @@ group by serial_number, app_name, DATE(FROM_UNIXTIME(timestamp))
 order by app_name) x
 join (
 	select * from tilo
-	where codigo_institucion in (select codigo_institucion from muestras where id_muestra = 1)
+	where codigo_institucion in (select codigo_institucion from muestras where id_muestra = 2)
 	group by serial_number) t
 on t.serial_number = x.serial_number
 left join (

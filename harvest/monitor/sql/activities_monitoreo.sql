@@ -12,7 +12,7 @@ group by bundle_id, serial_number, DATE(FROM_UNIXTIME(timestamp))
 order by bundle_id) x
 join (
 	select * from tilo t 
-	where codigo_institucion in (select codigo_institucion from muestras where id_muestra = 1)
+	where codigo_institucion in (select codigo_institucion from muestras where id_muestra = 2)
 	group by serial_number) t
 on t.serial_number = x.serial_number
 left join (
