@@ -6,7 +6,6 @@ truncate(x.duracion,2), t.* from
 (select timestamp, app_name, serial_number, SUM(spent_time)/60 as duracion 
 from gnome_launches l
 where l.app_name != ''
-and l.spent_time > 0
 and l.app_name not in ( select app_name from gnome_alias where enabled=0)
 group by serial_number, app_name, DATE(FROM_UNIXTIME(timestamp))
 order by app_name) x
