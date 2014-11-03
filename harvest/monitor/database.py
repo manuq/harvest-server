@@ -158,3 +158,15 @@ class Database(object):
 
         return result
 
+    def _json_universo_resumen(self, cursor):
+        result = []
+        for row in cursor.fetchall():
+            result.append({
+                'porcentaje': int(row[0]),
+                'registrados': int(row[1]),
+                'universo': int(row[2]),
+                'timestamp': int(row[3]),
+            })
+
+        return result
+

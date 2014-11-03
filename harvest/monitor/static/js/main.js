@@ -58,6 +58,17 @@ function crearDatabaseSize() {
 
 function crearEquiposMuestra() {
 
+    $.getJSON("/json/universo_resumen", function(data) {
+       var html = "";
+        for (var i = 0; i < data.length; i++) {
+            html += "<tr><td>" + data[i]['porcentaje'] + "%</td>";
+            html += "<td>" + data[i]['registrados'] + "</td>";
+            html += "<td>" + data[i]['universo'] + "</td>";
+            html += "<td>" + data[i]['timestamp'] + "</td></tr>";
+        }
+        $('#universo_resumen tbody').html(html);
+    });
+
     var chart = d3.select(".chart.equipos-muestra")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
