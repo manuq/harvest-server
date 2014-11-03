@@ -63,8 +63,7 @@ function crearEquiposMuestra() {
         for (var i = 0; i < data.length; i++) {
             html += "<tr><td>" + data[i]['porcentaje'] + "%</td>";
             html += "<td>" + data[i]['registrados'] + "</td>";
-            html += "<td>" + data[i]['universo'] + "</td>";
-            html += "<td>" + data[i]['timestamp'] + "</td></tr>";
+            html += "<td>" + data[i]['universo'] + "</td></tr>";
         }
         $('#universo_resumen tbody').html(html);
     });

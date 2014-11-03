@@ -165,7 +165,6 @@ class Database(object):
                 'porcentaje': int(row[0]),
                 'registrados': int(row[1]),
                 'universo': int(row[2]),
-                'timestamp': int(row[3]),
             })
 
         return result
