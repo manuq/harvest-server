@@ -8,6 +8,8 @@ SELECT x.year, x.week, spent_sugar, spent_gnome FROM (
   AND spent_time > 0 and spent_time/60/60 < 24
   and YEAR(FROM_UNIXTIME(timestamp)) > 2013
   GROUP BY YEAR(FROM_UNIXTIME(timestamp)), WEEK(FROM_UNIXTIME(timestamp))
+  desc
+  limit 12
 ) x
 LEFT JOIN (
   SELECT SEC_TO_TIME(SUM(spent_time) / COUNT(DISTINCT sessions.serial_number)) AS spent_gnome,
@@ -19,5 +21,7 @@ LEFT JOIN (
   AND spent_time > 0 and spent_time/60/60 < 24
   and YEAR(FROM_UNIXTIME(timestamp)) > 2013
   GROUP BY YEAR(FROM_UNIXTIME(timestamp)), WEEK(FROM_UNIXTIME(timestamp))
+  desc
+  limit 12
 ) y
-ON x.week = y.week AND x.year = y.year;
+ON x.week = y.week AND x.year = y.year
