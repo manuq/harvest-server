@@ -1,20 +1,13 @@
-SELECT 'aplicacion','fecha','duracion_gnome','uuid','fecha_act','serial_number',
-'departamento','tipo_institucion', 'codigo_institucion', 'perfil','grado','fecha_nac','modelo_equipo'
-UNION ALL
-(select ifnull(app_id,x.app_name), DATE(FROM_UNIXTIME(x.timestamp)),
-truncate(x.duracion,2), t.* from
-(select timestamp, app_name, serial_number, SUM(spent_time)/60 as duracion 
-from gnome_launches l
+select IFNULL(app_id, x.app_name), fecha, duracion, uuid, serial_number, departamento, tipo_institucion, codigo_institucion, perfil, grado, fecha_nac, modelo_equipo from (
+select l.app_name, DATE(FROM_UNIXTIME(timestamp)) as fecha, truncate(SUM(spent_time)/60,2) as duracion, t.uuid, t.serial_number, t.departamento, t.tipo_institucion, t.codigo_institucion, t.perfil, t.grado, t.fecha_nac, t.modelo_equipo
+from gnome_launches l, tilo t
 where l.app_name != ''
-and l.app_name not in ( select app_name from gnome_alias where enabled=0)
-group by serial_number, app_name, DATE(FROM_UNIXTIME(timestamp))
-order by app_name) x
-join (
-	select * from tilo
-	where codigo_institucion in (select codigo_institucion from muestras where id_muestra = 2)
-	group by serial_number) t
-on t.serial_number = x.serial_number
+and t.serial_number=l.serial_number
+and l.app_name not in ( select g.app_name from gnome_alias g where enabled=0)
+and t.codigo_institucion in (select codigo_institucion from muestras where id_muestra = 2)
+group by l.serial_number, l.app_name, DATE(FROM_UNIXTIME(l.timestamp))
+) x
 left join (
-select app_name, app_id from gnome_alias    
+select app_id, app_name from gnome_alias
 ) y
-on x.app_name = y.app_name);
+on x.app_name = y.app_name;
